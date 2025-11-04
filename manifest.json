@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Job Saver Extension",
+  "version": "1.0.0",
+  "description": "Extract job information from web pages using Ollama",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://localhost/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
+
