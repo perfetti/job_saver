@@ -233,6 +233,131 @@ async function saveJobToBackend(jobInfo) {
   }
 }
 
+// Listen for keyboard shortcut command
+chrome.commands.onCommand.addListener((command) => {
+  if (command === 'extract-job') {
+    handleKeyboardShortcut();
+  }
+});
+
+/**
+ * Handle keyboard shortcut extraction
+ */
+async function handleKeyboardShortcut() {
+  try {
+    // Get the active tab
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+    if (!tab) {
+      showNotification('Error', 'No active tab found', 'error');
+      return;
+    }
+
+    // Check if we can access the tab
+    if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://') || tab.url.startsWith('edge://')) {
+      showNotification('Error', 'Cannot extract content from this type of page', 'error');
+      return;
+    }
+
+    showNotification('Extracting...', 'Getting page content', 'info');
+
+    // Extract page content
+    const results = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: () => {
+        return {
+          text: document.body.innerText || document.body.textContent || '',
+          html: document.documentElement.outerHTML,
+          title: document.title,
+          url: window.location.href
+        };
+      }
+    });
+
+    if (!results || !results[0] || !results[0].result) {
+      showNotification('Error', 'Failed to get page content', 'error');
+      return;
+    }
+
+    const content = results[0].result;
+
+    // Get default model from storage or use default
+    const storage = await chrome.storage.local.get(['selectedModel']);
+    const model = storage.selectedModel || 'llama3.1:latest';
+
+    showNotification('Processing...', 'Extracting job information with AI', 'info');
+
+    // Process the content
+    const response = await handleExtractJobInfoSync({
+      content: content,
+      url: tab.url,
+      title: tab.title,
+      model: model
+    });
+
+    if (response.success) {
+      const jobTitle = response.data?.title || response.data?.job?.title || 'Job';
+      const company = response.data?.company || response.data?.job?.company || '';
+      const savedMessage = company
+        ? `${jobTitle} at ${company}`
+        : jobTitle;
+      showNotification('Success!', `Job information extracted and saved: ${savedMessage}`, 'success');
+    } else {
+      showNotification('Error', response.error || 'Failed to extract job information', 'error');
+    }
+
+  } catch (error) {
+    console.error('Error in keyboard shortcut handler:', error);
+    showNotification('Error', error.message || 'Failed to extract job information', 'error');
+  }
+}
+
+/**
+ * Synchronous version of handleExtractJobInfo (for keyboard shortcut)
+ */
+async function handleExtractJobInfoSync(data) {
+  return new Promise(async (resolve) => {
+    await handleExtractJobInfo(data, (response) => {
+      resolve(response);
+    });
+  });
+}
+
+/**
+ * Show notification to user
+ */
+function showNotification(title, message, type = 'info') {
+  // Use Chrome notifications API
+  const notificationOptions = {
+    type: 'basic',
+    title: title,
+    message: message,
+    priority: type === 'error' ? 2 : 1
+  };
+
+  // Try to add icon if available (optional)
+  try {
+    // Chrome will use default icon if this fails
+    notificationOptions.iconUrl = chrome.runtime.getURL('icon48.png');
+  } catch (e) {
+    // Icon not available, Chrome will use default
+  }
+
+  chrome.notifications.create(notificationOptions, (notificationId) => {
+    if (chrome.runtime.lastError) {
+      console.error('Notification error:', chrome.runtime.lastError);
+      return;
+    }
+
+    // Auto-close after 5 seconds for success/info, 10 seconds for errors
+    if (notificationId) {
+      setTimeout(() => {
+        chrome.notifications.clear(notificationId);
+      }, type === 'error' ? 10000 : 5000);
+    }
+  });
+}
+
 // Log when background script is loaded
 console.log('Job Saver Extension background script loaded');
 

@@ -6,7 +6,8 @@
   "permissions": [
     "activeTab",
     "scripting",
-    "storage"
+    "storage",
+    "notifications"
   ],
   "host_permissions": [
     "http://localhost/*",
@@ -17,6 +18,15 @@
   },
   "background": {
     "service_worker": "background.js"
+  },
+  "commands": {
+    "extract-job": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Space",
+        "mac": "MacCtrl+Shift+Space"
+      },
+      "description": "Extract job information from current page"
+    }
   }
 }
 
