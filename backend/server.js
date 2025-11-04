@@ -77,15 +77,58 @@ app.post('/api/jobs', (req, res) => {
     // Read existing jobs
     const jobs = readJobs();
 
-    // Check for duplicates (by sourceUrl if available)
-    if (jobData.sourceUrl) {
-      const existing = jobs.find(job => job.sourceUrl === jobData.sourceUrl);
-      if (existing) {
-        // Update existing job instead of creating duplicate
-        Object.assign(existing, jobData);
-        writeJobs(jobs);
-        return res.json({ success: true, job: existing, message: 'Job updated' });
+    // Normalize URL for comparison (remove trailing slashes, query params, fragments)
+    function normalizeUrl(url) {
+      if (!url) return null;
+      try {
+        const urlObj = new URL(url);
+        // Remove query parameters and fragments for comparison
+        urlObj.search = '';
+        urlObj.hash = '';
+        // Remove trailing slash
+        let normalized = urlObj.toString();
+        if (normalized.endsWith('/')) {
+          normalized = normalized.slice(0, -1);
+        }
+        return normalized.toLowerCase();
+      } catch (e) {
+        // If URL parsing fails, just normalize the string
+        return url.toLowerCase().split('?')[0].split('#')[0].replace(/\/$/, '');
       }
+    }
+
+    // Check for duplicates by sourceUrl (normalized)
+    const normalizedSourceUrl = normalizeUrl(jobData.sourceUrl);
+    let existing = null;
+
+    if (normalizedSourceUrl) {
+      existing = jobs.find(job => {
+        const existingNormalized = normalizeUrl(job.sourceUrl);
+        return existingNormalized === normalizedSourceUrl;
+      });
+    }
+
+    // Also check by applicationUrl as fallback (in case sourceUrl differs but applicationUrl is the same)
+    if (!existing && jobData.applicationUrl) {
+      const normalizedAppUrl = normalizeUrl(jobData.applicationUrl);
+      if (normalizedAppUrl) {
+        existing = jobs.find(job => {
+          const existingNormalized = normalizeUrl(job.applicationUrl);
+          return existingNormalized === normalizedAppUrl;
+        });
+      }
+    }
+
+    if (existing) {
+      // Update existing job instead of creating duplicate
+      // Preserve the original ID and savedAt, but update extractedAt
+      const originalSavedAt = existing.savedAt;
+      Object.assign(existing, jobData);
+      existing.savedAt = originalSavedAt; // Keep original save time
+      existing.extractedAt = new Date().toISOString(); // Update extraction time
+      existing.id = existing.id; // Keep original ID
+      writeJobs(jobs);
+      return res.json({ success: true, job: existing, message: 'Job updated (duplicate prevented)', updated: true });
     }
 
     // Add new job

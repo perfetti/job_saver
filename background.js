@@ -183,8 +183,9 @@ Now extract the job information and return ONLY the JSON object:`;
     jobInfo.extractedAt = new Date().toISOString();
 
     // Save to backend
+    let saveResult = null;
     try {
-      await saveJobToBackend(jobInfo);
+      saveResult = await saveJobToBackend(jobInfo);
     } catch (saveError) {
       console.error('Failed to save job to backend:', saveError);
       // Continue even if save fails - we still want to return the data
@@ -192,7 +193,9 @@ Now extract the job information and return ONLY the JSON object:`;
 
     sendResponse({
       success: true,
-      data: jobInfo
+      data: jobInfo,
+      saved: saveResult !== null,
+      updated: saveResult?.updated || false
     });
 
   } catch (error) {
@@ -225,7 +228,11 @@ async function saveJobToBackend(jobInfo) {
     }
 
     const result = await response.json();
-    console.log('Job saved successfully:', result);
+    if (result.updated) {
+      console.log('Job updated (duplicate prevented):', result);
+    } else {
+      console.log('Job saved successfully:', result);
+    }
     return result;
   } catch (error) {
     console.error('Error saving job to backend:', error);
@@ -233,7 +240,38 @@ async function saveJobToBackend(jobInfo) {
   }
 }
 
-// Listen for keyboard shortcut command
+// Create context menu item on extension install/startup
+function createContextMenu() {
+  chrome.contextMenus.removeAll(() => {
+    chrome.contextMenus.create({
+      id: 'extract-job',
+      title: 'Extract Job Information',
+      contexts: ['page', 'selection']
+    });
+  });
+}
+
+// Create context menu on install
+chrome.runtime.onInstalled.addListener(() => {
+  createContextMenu();
+});
+
+// Also create on startup (for when browser restarts)
+chrome.runtime.onStartup.addListener(() => {
+  createContextMenu();
+});
+
+// Create immediately when script loads (in case it wasn't created yet)
+createContextMenu();
+
+// Listen for context menu clicks
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === 'extract-job') {
+    handleKeyboardShortcut();
+  }
+});
+
+// Listen for keyboard shortcut command (keeping for compatibility)
 chrome.commands.onCommand.addListener((command) => {
   if (command === 'extract-job') {
     handleKeyboardShortcut();
@@ -296,12 +334,18 @@ async function handleKeyboardShortcut() {
     });
 
     if (response.success) {
+      // Job is already saved in handleExtractJobInfo, show appropriate message
       const jobTitle = response.data?.title || response.data?.job?.title || 'Job';
       const company = response.data?.company || response.data?.job?.company || '';
       const savedMessage = company
         ? `${jobTitle} at ${company}`
         : jobTitle;
-      showNotification('Success!', `Job information extracted and saved: ${savedMessage}`, 'success');
+
+      const notificationMessage = response.updated
+        ? `Job updated (duplicate prevented): ${savedMessage}`
+        : `Job information extracted and saved: ${savedMessage}`;
+
+      showNotification('Success!', notificationMessage, 'success');
     } else {
       showNotification('Error', response.error || 'Failed to extract job information', 'error');
     }
