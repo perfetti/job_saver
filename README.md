@@ -8,6 +8,9 @@ A Chrome extension that extracts job information from web pages using Ollama AI.
 - Uses Ollama for intelligent job data extraction
 - Event-based background script architecture
 - Clean and modern UI
+- Automatic saving to backend server
+- Gallery page to view all saved jobs
+- Search and filter functionality
 
 ## Setup
 
@@ -49,10 +52,14 @@ A Chrome extension that extracts job information from web pages using Ollama AI.
 
    Then restart your terminal and run `ollama serve`.
 
-3. **Model**: The extension uses `llama3.2` by default. You can change this in `background.js`:
-   ```javascript
-   const model = 'llama3.2'; // Change to your preferred model
-   ```
+3. **Backend Server** (REQUIRED for saving jobs)
+   - Navigate to the `backend` directory
+   - Install dependencies: `npm install`
+   - Start the server: `npm start`
+   - The server runs on `http://localhost:3000`
+   - Gallery page available at `http://localhost:3000`
+
+4. **Model**: The extension uses `llama3.1:latest` by default. You can select a model from the dropdown in the popup.
 
 ### Installation
 
@@ -88,12 +95,19 @@ const ollamaUrl = 'http://localhost:11434/api/generate';
 
 ## File Structure
 
+### Extension Files
 - `manifest.json` - Extension configuration
 - `popup.html` - Popup UI
 - `popup.js` - Popup script logic
 - `popup.css` - Popup styling
 - `content.js` - Content script for page interaction
 - `background.js` - Background script with event handlers and Ollama integration
+
+### Backend Files
+- `backend/server.js` - Express server with API endpoints
+- `backend/public/gallery.html` - Gallery page to view saved jobs
+- `backend/package.json` - Backend dependencies
+- `backend/jobs.json` - Data storage (created automatically)
 
 ## Event Architecture
 
