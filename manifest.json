@@ -5,7 +5,8 @@
   "description": "Extract job information from web pages using Ollama",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "storage"
   ],
   "host_permissions": [
     "http://localhost/*",

@@ -1,6 +1,7 @@
 // Event handler orchestration - simple event name to handler function mapping
 const eventHandlers = {
-  extractJobInfo: handleExtractJobInfo
+  extractJobInfo: handleExtractJobInfo,
+  getAvailableModels: handleGetAvailableModels
 };
 
 // Listen for messages from popup or content scripts
@@ -20,13 +21,51 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 /**
+ * Handle getting available models from Ollama
+ * @param {Object} data - Not used currently
+ * @param {Function} sendResponse - Callback to send response
+ */
+async function handleGetAvailableModels(data, sendResponse) {
+  try {
+    const ollamaUrl = 'http://localhost:11434/api/tags';
+
+    const response = await fetch(ollamaUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch models: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    const models = result.models || [];
+
+    sendResponse({
+      success: true,
+      models: models
+    });
+
+  } catch (error) {
+    console.error('Error fetching models:', error);
+    sendResponse({
+      success: false,
+      error: error.message || 'Failed to fetch models',
+      models: []
+    });
+  }
+}
+
+/**
  * Handle job information extraction
- * @param {Object} data - Contains content, url, and title
+ * @param {Object} data - Contains content, url, title, and model
  * @param {Function} sendResponse - Callback to send response
  */
 async function handleExtractJobInfo(data, sendResponse) {
   try {
-    const { content, url, title } = data;
+    const { content, url, title, model } = data;
 
     if (!content) {
       sendResponse({
@@ -57,7 +96,7 @@ Return ONLY valid JSON, no additional text or markdown formatting.`;
 
     // Call Ollama API
     const ollamaUrl = 'http://localhost:11434/api/generate';
-    const model = 'llama3.2'; // You can change this to your preferred model
+    const selectedModel = model || 'llama3.1:latest'; // Default model if not specified
 
     const response = await fetch(ollamaUrl, {
       method: 'POST',
@@ -65,7 +104,7 @@ Return ONLY valid JSON, no additional text or markdown formatting.`;
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: model,
+        model: selectedModel,
         prompt: prompt,
         stream: false,
         format: 'json'
@@ -73,7 +112,13 @@ Return ONLY valid JSON, no additional text or markdown formatting.`;
     });
 
     if (!response.ok) {
-      throw new Error(`Ollama API error: ${response.status} ${response.statusText}`);
+      switch (response.status) {
+        case 403:
+          throw new Error(`Ollama API returned 403 Forbidden. This is usually a CORS issue. Please configure Ollama to allow Chrome extensions by setting the OLLAMA_ORIGINS environment variable. See README for instructions.`);
+        default:
+          data = await response.json();
+          throw new Error(`Ollama API error: ${response.status} ${response.statusText}, ${JSON.stringify(data)}`);
+      }
     }
 
     const result = await response.json();

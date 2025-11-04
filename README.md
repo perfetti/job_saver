@@ -18,7 +18,38 @@ A Chrome extension that extracts job information from web pages using Ollama AI.
    - Install and start Ollama
    - Make sure it's running on `http://localhost:11434`
 
-2. **Model**: The extension uses `llama3.2` by default. You can change this in `background.js`:
+2. **Configure Ollama for Chrome Extensions** (REQUIRED)
+
+   By default, Ollama blocks requests from Chrome extensions. You need to configure Ollama to allow them:
+
+   **Option 1: Allow all Chrome extensions (Easiest)**
+   ```bash
+   export OLLAMA_ORIGINS=chrome-extension://*
+   ollama serve
+   ```
+
+   **Option 2: Allow specific extension (More secure)**
+
+   First, get your extension ID:
+   1. Go to `chrome://extensions/`
+   2. Find "Job Saver Extension"
+   3. Copy the ID (looks like: `abcdefghijklmnopqrstuvwxyzabcdef`)
+
+   Then set the environment variable:
+   ```bash
+   export OLLAMA_ORIGINS=chrome-extension://YOUR_EXTENSION_ID_HERE
+   ollama serve
+   ```
+
+   **For macOS/Linux (Persistent):**
+   Add to your `~/.zshrc` or `~/.bashrc`:
+   ```bash
+   export OLLAMA_ORIGINS=chrome-extension://*
+   ```
+
+   Then restart your terminal and run `ollama serve`.
+
+3. **Model**: The extension uses `llama3.2` by default. You can change this in `background.js`:
    ```javascript
    const model = 'llama3.2'; // Change to your preferred model
    ```
@@ -73,8 +104,9 @@ The background script uses an event handler mapping:
 
 ## Troubleshooting
 
+- **403 Forbidden Error**: This means Ollama is blocking Chrome extension requests. You MUST configure `OLLAMA_ORIGINS` environment variable (see Prerequisites section above).
 - **Ollama not responding**: Make sure Ollama is running (`ollama serve`)
 - **Model not found**: Make sure the specified model is installed (`ollama pull llama3.2`)
-- **CORS errors**: Check that Ollama allows requests from the extension
+- **Connection errors**: Check that Ollama is running and accessible at `http://localhost:11434`
 - **No content extracted**: Make sure you're on a page with actual content
 

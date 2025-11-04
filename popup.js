@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const extractBtn = document.getElementById('extractBtn');
+  const modelSelect = document.getElementById('modelSelect');
   const status = document.getElementById('status');
   const results = document.getElementById('results');
 
@@ -12,6 +13,65 @@ document.addEventListener('DOMContentLoaded', () => {
     results.textContent = JSON.stringify(data, null, 2);
     results.classList.add('show');
   }
+
+  // Load available models on popup open
+  async function loadModels() {
+    try {
+      modelSelect.disabled = true;
+      chrome.runtime.sendMessage({
+        event: 'getAvailableModels'
+      }, (response) => {
+        if (chrome.runtime.lastError) {
+          console.error('Error loading models:', chrome.runtime.lastError);
+          modelSelect.innerHTML = '<option value="">Error loading models</option>';
+          modelSelect.disabled = false;
+          return;
+        }
+
+        if (response && response.success && response.models) {
+          const models = response.models;
+          modelSelect.innerHTML = '';
+
+          if (models.length === 0) {
+            modelSelect.innerHTML = '<option value="">No models available</option>';
+          } else {
+            models.forEach(model => {
+              const option = document.createElement('option');
+              option.value = model.name;
+              option.textContent = model.name;
+              modelSelect.appendChild(option);
+            });
+
+            // Load saved preference
+            chrome.storage.local.get(['selectedModel'], (result) => {
+              if (result.selectedModel && models.some(m => m.name === result.selectedModel)) {
+                modelSelect.value = result.selectedModel;
+              } else if (models.length > 0) {
+                // Default to first model if no preference
+                modelSelect.value = models[0].name;
+                chrome.storage.local.set({ selectedModel: models[0].name });
+              }
+            });
+          }
+        } else {
+          modelSelect.innerHTML = '<option value="">Error loading models</option>';
+        }
+        modelSelect.disabled = false;
+      });
+    } catch (error) {
+      console.error('Error loading models:', error);
+      modelSelect.innerHTML = '<option value="">Error loading models</option>';
+      modelSelect.disabled = false;
+    }
+  }
+
+  // Save model preference when changed
+  modelSelect.addEventListener('change', () => {
+    chrome.storage.local.set({ selectedModel: modelSelect.value });
+  });
+
+  // Load models when popup opens
+  loadModels();
 
   extractBtn.addEventListener('click', async () => {
     try {
@@ -51,13 +111,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
       setStatus('Sending to background script...', 'info');
 
+      // Get selected model
+      const selectedModel = modelSelect.value;
+      if (!selectedModel) {
+        throw new Error('Please select a model');
+      }
+
       // Send content to background script for processing
       chrome.runtime.sendMessage({
         event: 'extractJobInfo',
         data: {
           content: content,
           url: tab.url,
-          title: tab.title
+          title: tab.title,
+          model: selectedModel
         }
       }, (response) => {
         extractBtn.disabled = false;
