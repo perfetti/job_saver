@@ -195,7 +195,8 @@ Now extract the job information and return ONLY the JSON object:`;
       success: true,
       data: jobInfo,
       saved: saveResult !== null,
-      updated: saveResult?.updated || false
+      updated: saveResult?.updated || false,
+      jobId: saveResult?.job?.id || jobInfo.id || null
     });
 
   } catch (error) {
@@ -346,6 +347,13 @@ async function handleKeyboardShortcut() {
         : `Job information extracted and saved: ${savedMessage}`;
 
       showNotification('Success!', notificationMessage, 'success');
+
+      // Open tag modal if we have a job ID
+      if (response.jobId && !response.updated) {
+        setTimeout(() => {
+          openTagModal(response.jobId, response.data);
+        }, 500);
+      }
     } else {
       showNotification('Error', response.error || 'Failed to extract job information', 'error');
     }
@@ -364,6 +372,23 @@ async function handleExtractJobInfoSync(data) {
     await handleExtractJobInfo(data, (response) => {
       resolve(response);
     });
+  });
+}
+
+/**
+ * Open tag modal window
+ */
+function openTagModal(jobId, jobData) {
+  const modalUrl = chrome.runtime.getURL('tag-modal.html');
+  const dataParam = encodeURIComponent(JSON.stringify(jobData));
+  const url = `${modalUrl}?jobId=${jobId}&data=${dataParam}`;
+
+  chrome.windows.create({
+    url: url,
+    type: 'popup',
+    width: 500,
+    height: 500,
+    focused: true
   });
 }
 

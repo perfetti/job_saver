@@ -131,6 +131,11 @@ app.post('/api/jobs', (req, res) => {
       return res.json({ success: true, job: existing, message: 'Job updated (duplicate prevented)', updated: true });
     }
 
+    // Initialize tags array if not present
+    if (!jobData.tags) {
+      jobData.tags = [];
+    }
+
     // Add new job
     jobs.push(jobData);
     writeJobs(jobs);
@@ -138,6 +143,26 @@ app.post('/api/jobs', (req, res) => {
     res.json({ success: true, job: jobData, message: 'Job saved successfully' });
   } catch (error) {
     console.error('Error saving job:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// PUT /api/jobs/:id/tags - Update tags for a job
+app.put('/api/jobs/:id/tags', (req, res) => {
+  try {
+    const jobs = readJobs();
+    const job = jobs.find(j => j.id === req.params.id);
+
+    if (!job) {
+      return res.status(404).json({ success: false, error: 'Job not found' });
+    }
+
+    // Update tags
+    job.tags = req.body.tags || [];
+    writeJobs(jobs);
+
+    res.json({ success: true, job: job, message: 'Tags updated successfully' });
+  } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });

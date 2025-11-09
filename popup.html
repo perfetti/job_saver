@@ -22,6 +22,35 @@
     <div id="status" class="status"></div>
     <div id="results" class="results"></div>
   </div>
+
+  <!-- Tag Modal -->
+  <div id="tagModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Job Saved Successfully!</h2>
+        <button class="modal-close" id="closeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="job-preview">
+          <div class="preview-title" id="previewTitle"></div>
+          <div class="preview-company" id="previewCompany"></div>
+          <div class="preview-location" id="previewLocation"></div>
+        </div>
+        <div class="tags-section">
+          <label for="tagInput">Add Tags (press Enter to add):</label>
+          <div class="tags-input-container">
+            <input type="text" id="tagInput" class="tag-input" placeholder="Type a tag and press Enter">
+            <div id="tagsList" class="tags-list"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="saveTagsBtn" class="save-tags-btn">Save Tags</button>
+        <button id="skipTagsBtn" class="skip-tags-btn">Skip</button>
+      </div>
+    </div>
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>

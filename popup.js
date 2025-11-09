@@ -73,6 +73,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load models when popup opens
   loadModels();
 
+  // Function to open tag modal
+  function openTagModal(jobId, jobData) {
+    const modalUrl = chrome.runtime.getURL('tag-modal.html');
+    const dataParam = encodeURIComponent(JSON.stringify(jobData));
+    const url = `${modalUrl}?jobId=${jobId}&data=${dataParam}`;
+
+    chrome.windows.create({
+      url: url,
+      type: 'popup',
+      width: 500,
+      height: 500,
+      focused: true
+    });
+  }
+
   extractBtn.addEventListener('click', async () => {
     try {
       extractBtn.disabled = true;
@@ -136,9 +151,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (response && response.success) {
-          setStatus('Job information extracted successfully!', 'success');
+          const message = response.updated
+            ? 'Job updated (duplicate prevented)!'
+            : 'Job information extracted successfully!';
+          setStatus(message, 'success');
           if (response.data) {
             showResults(response.data);
+          }
+
+          // Open tag modal if we have a job ID and it's a new job
+          if (response.jobId && !response.updated) {
+            setTimeout(() => {
+              openTagModal(response.jobId, response.data);
+            }, 500);
           }
         } else {
           setStatus(`Error: ${response?.error || 'Failed to extract job information'}`, 'error');

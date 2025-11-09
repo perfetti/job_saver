@@ -283,6 +283,9 @@
       <select class="filter-select" id="companyFilter">
         <option value="">All Companies</option>
       </select>
+      <select class="filter-select" id="tagFilter">
+        <option value="">All Tags</option>
+      </select>
       <button class="refresh-btn" id="refreshBtn">Refresh</button>
     </div>
 
@@ -308,6 +311,7 @@
           updateStats();
           renderJobs(allJobs);
           updateCompanyFilter();
+          updateTagFilter();
         } else {
           container.innerHTML = `<div class="error">Error: ${data.error}</div>`;
         }
@@ -333,6 +337,26 @@
         const option = document.createElement('option');
         option.value = company;
         option.textContent = company;
+        filter.appendChild(option);
+      });
+    }
+
+    // Update tag filter dropdown
+    function updateTagFilter() {
+      const filter = document.getElementById('tagFilter');
+      const allTags = [];
+      allJobs.forEach(job => {
+        if (job.tags && Array.isArray(job.tags)) {
+          allTags.push(...job.tags);
+        }
+      });
+      const uniqueTags = [...new Set(allTags)].sort();
+
+      filter.innerHTML = '<option value="">All Tags</option>';
+      uniqueTags.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag;
+        option.textContent = tag;
         filter.appendChild(option);
       });
     }
@@ -404,6 +428,16 @@
         }
       }
 
+      // Format tags
+      let tagsHtml = '';
+      if (job.tags && Array.isArray(job.tags) && job.tags.length > 0) {
+        tagsHtml = `
+          <div class="job-tags" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px;">
+            ${job.tags.map(tag => `<span style="background: #667eea; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">${escapeHtml(tag)}</span>`).join('')}
+          </div>
+        `;
+      }
+
       // Format date
       const date = job.postedDate || job.extractedAt
         ? new Date(job.postedDate || job.extractedAt).toLocaleDateString()
@@ -418,6 +452,7 @@
         ${job.description ? `<div class="job-description">${escapeHtml(job.description)}</div>` : ''}
         ${salaryHtml}
         ${requirementsHtml}
+        ${tagsHtml}
         <div class="job-footer">
           <div class="job-links">
             ${job.sourceUrl ? `<a href="${job.sourceUrl}" target="_blank" class="job-link">View Original</a>` : ''}
@@ -446,6 +481,7 @@
     function filterJobs() {
       const searchTerm = document.getElementById('searchInput').value.toLowerCase();
       const companyFilter = document.getElementById('companyFilter').value;
+      const tagFilter = document.getElementById('tagFilter').value;
 
       const filtered = allJobs.filter(job => {
         const matchesSearch = !searchTerm ||
@@ -457,7 +493,9 @@
 
         const matchesCompany = !companyFilter || job.company === companyFilter;
 
-        return matchesSearch && matchesCompany;
+        const matchesTag = !tagFilter || (job.tags && Array.isArray(job.tags) && job.tags.includes(tagFilter));
+
+        return matchesSearch && matchesCompany && matchesTag;
       });
 
       renderJobs(filtered);
@@ -466,6 +504,7 @@
     // Event listeners
     document.getElementById('searchInput').addEventListener('input', filterJobs);
     document.getElementById('companyFilter').addEventListener('change', filterJobs);
+    document.getElementById('tagFilter').addEventListener('change', filterJobs);
     document.getElementById('refreshBtn').addEventListener('click', loadJobs);
 
     // Load jobs on page load
