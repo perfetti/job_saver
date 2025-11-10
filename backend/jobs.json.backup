@@ -1,0 +1,531 @@
+[
+  {
+    "title": "Lead Engineer",
+    "company": "Fidelity Investments",
+    "location": [
+      "Smithfield, RI",
+      "Merrimack, NH",
+      "Jersey City, NJ",
+      "Westlake, TX"
+    ],
+    "description": "As a Lead Engineer at Fidelity Labs, you will lead the development of innovative, customer-facing Blockchain products for a greenfield project.",
+    "salary_lower_bound": 126000,
+    "salary_upper_bound": 255000,
+    "salary_currency": "USD",
+    "requirements": [
+      "10+ years of proven experience designing and leading all aspects of large-scale, secure, and highly available financial or Blockchain systems",
+      "Proficiency with document, distributed, and relational databases such as MongoDB, DynamoDB, PostgreSQL (JSONB), and MySQL"
+    ],
+    "applicationUrl": null,
+    "postedDate": "October 29, 2025",
+    "sourceUrl": "https://jobs.fidelity.com/en/jobs/2119421/lead-engineer/",
+    "extractedAt": "2025-11-04T15:46:13.334Z",
+    "id": "1762271173337-v0yrl96vu",
+    "savedAt": "2025-11-04T15:46:13.337Z"
+  },
+  {
+    "title": "Director, Software Engineering (Python, Individual Contributor)",
+    "company": "Fidelity Investments",
+    "location": [
+      "Boston, MA",
+      "Merrimack, NH",
+      "Jersey City, NJ"
+    ],
+    "description": "The Role... You are an experienced engineer with a deep hands-on experience of systems development, and a burning desire to deliver software solutions which unlock the capabilities of Generative AI in the context of a professional domain such as finance.",
+    "salary_lower_bound": 126000,
+    "salary_upper_bound": 255000,
+    "salary_currency": "USD",
+    "requirements": [
+      "Bachelor's or Master's Computer Science or relevant field, with ten years plus of industry experience.",
+      "Proficient in deploying software products into production capable of handling large volumes of data at scale.",
+      "Design, develop, and maintain robust, scalable, and secure Python-based applications and services."
+    ],
+    "applicationUrl": null,
+    "postedDate": "October 30, 2025",
+    "sourceUrl": "https://jobs.fidelity.com/en/jobs/2117424/director-software-engineering-python-individual-contributor/#main",
+    "extractedAt": "2025-11-04T15:46:05.485Z",
+    "id": "1762271165488-wa9qqzpqv",
+    "savedAt": "2025-11-04T15:46:05.488Z"
+  },
+  {
+    "title": "Director, Software Engineering (Python, Individual Contributor)",
+    "company": "Fidelity Investments",
+    "location": [
+      "Boston, MA",
+      "Merrimack, NH",
+      "Jersey City, NJ"
+    ],
+    "description": "Director, Software Engineering – Asset Management Technology\nThe Role...",
+    "salary_lower_bound": 126000,
+    "salary_upper_bound": 255000,
+    "salary_currency": "USD",
+    "requirements": [
+      "A Bachelor’s or Master's Computer Science or relevant field, with ten years plus of industry experience.",
+      "Proficient in deploying software products into production capable of handling large volumes of data at scale.",
+      "Design, develop, and maintain robust, scalable, and secure Python-based applications and services.",
+      "Strong understanding of Python internals, performance tuning, and advanced language features.",
+      "Write clean, idiomatic, and well-documented Python code following PEP8 and enterprise coding standards.",
+      "Optimize Python applications for performance, memory usage, and concurrency.",
+      "Ability to orchestrate solutions within a cloud-based environment",
+      "Strong understanding of standard methodologies for large scale application design, SOA, microservices, distributed compute, containers, and use of the cloud."
+    ],
+    "applicationUrl": null,
+    "postedDate": "October 30, 2025",
+    "sourceUrl": "https://jobs.fidelity.com/en/jobs/2117424/director-software-engineering-python-individual-contributor/",
+    "extractedAt": "2025-11-04T16:10:48.492Z",
+    "id": "1762272648495-vf1y8jp61",
+    "savedAt": "2025-11-04T16:10:48.495Z"
+  },
+  {
+    "title": "Lead Software Engineer, Back End",
+    "company": "Capital One",
+    "location": [
+      "McLean, VA",
+      "New York, NY"
+    ],
+    "description": "Build and pioneer in the technology space. Lead a portfolio of diverse technology projects and a team of developers with deep experience in distributed microservices, and full stack systems to create solutions that help meet regulatory needs for the company.",
+    "salary_lower_bound": 193400,
+    "salary_upper_bound": 220700,
+    "salary_currency": "USD",
+    "requirements": [
+      "Bachelor’s Degree",
+      "At least 4 years of professional software engineering experience",
+      "At least 1 year experience with cloud computing (AWS, Microsoft Azure, Google Cloud)",
+      "Master's Degree (preferred)",
+      "7+ years of experience in at least one of the following: Java, Scala, Python, Go, or Node.js (preferred)",
+      "2+ years of experience with AWS, GCP, Azure, or another cloud service (preferred)",
+      "4+ years of experience in open source frameworks (preferred)",
+      "1+ years of people management experience (preferred)",
+      "2+ years of experience in Agile practices (preferred)"
+    ],
+    "applicationUrl": null,
+    "postedDate": "a month ago",
+    "sourceUrl": "https://www.levels.fyi/jobs?jobId=114630127886705350",
+    "extractedAt": "2025-11-04T16:10:55.761Z",
+    "id": "1762272655766-ee0pukeln",
+    "savedAt": "2025-11-04T16:10:55.767Z",
+    "postedDateISO": null
+  },
+  {
+    "title": "Principal Developer Technology Engineer",
+    "company": "Nvidia",
+    "location": [
+      "California, United States",
+      "Santa Clara, CA",
+      "New York, United States",
+      "New York, NY"
+    ],
+    "description": "Research and develop techniques to accelerate top CSP workloads on NVIDIA's computing platform including advanced CPUs, GPUs and interconnects. Collaborate with libraries, tools, system software architecture, hardware, and research teams at NVIDIA to influence the design of next-generation programming models, software, and architectures.",
+    "salary_lower_bound": 272000,
+    "salary_upper_bound": 425500,
+    "salary_currency": "USD",
+    "requirements": [
+      "Masters degree in Computer Science, Computer Engineering, or related computationally focused science degree (or equivalent experience)",
+      "10+ years of relevant work experience or research",
+      "Programming proficiency in C/C++ with a deep understanding of software design, programming techniques, and algorithms",
+      "A background that includes parallel programming, ideally CUDA C/C++. Hands on experience doing low-level performance optimizations.",
+      "In-depth expertise with CPU and GPU architecture fundamentals. Strong math skills, including linear algebra, for problem-solving and performance modeling"
+    ],
+    "applicationUrl": null,
+    "postedDate": "24 days ago",
+    "requirements_text": "What You Will Be Doing\n• In this role, you will research and develop techniques to accelerate top CSP workloads on NVIDIA's computing platform including advanced CPUs, GPUs and interconnects. \n• Work directly with key customers to perform in-depth analysis and optimization of complex workloads to ensure the best possible performance on current and next-generation hardware. \n• Collaborate with libraries, tools, system software architecture, hardware, and research teams at NVIDIA to influence the design of next-generation programming models, software, and architectures.\n\nWhat We Need To See\n• Masters degree in Computer Science, Computer Engineering, or related computationally focused science degree (or equivalent experience).\n• You have 10+ years of relevant work experience or research.\n• Programming proficiency in C/C++ with a deep understanding of software design, programming techniques, and algorithms.\n• A background that includes parallel programming, ideally CUDA C/C++. Hands on experience doing low-level performance optimizations.\n• In-depth expertise with CPU and GPU architecture fundamentals. Strong math skills, including linear algebra, for problem-solving and performance modeling",
+    "postedDate_text": null,
+    "sourceUrl": "https://www.levels.fyi/jobs?locationSlug=united-states&locationSlugs=new-york-city-area%2Cnew-jersey-usa%2Cprinceton-usa-5%2Cphiladelphia-area&minMedianTotalCompensation=200000&offset=5&standardLevels=mid_staff%2Cprincipal%2Cmanager%2Cdirector%2Cexecutive&jobId=134206260256875206",
+    "extractedAt": "2025-11-04T16:15:26.543Z",
+    "id": "1762272926547-jguvpc4t3",
+    "savedAt": "2025-11-04T16:15:26.547Z"
+  },
+  {
+    "title": "Technical Program Manager, AI and ML Software",
+    "company": "Nvidia",
+    "location": [
+      "Santa Clara, CA",
+      "United States"
+    ],
+    "description": "Lead initiatives and programs focused on Deep Learning Inference to support NVIDIA's top AI Inference researchers and engineers.",
+    "salary_lower_bound": 192000,
+    "salary_upper_bound": 368000,
+    "salary_currency": "USD",
+    "requirements": [
+      "Postgraduate degree in Computer Science or Artificial Intelligence or equivalent experience.",
+      "10+ years program management experience including proven ability managing global projects, adaptable to multiple time zones.",
+      "Ability to think strategically and tactically and to build consensus to make programs successful.",
+      "Proven experience to creatively resolve technical issues and resource conflicts.",
+      "Thorough working knowledge of software engineering best practices and hardware bring-up.",
+      "You should be detail oriented with shown ability to multitask, in a dynamic environment with shifting priorities and changing requirements.",
+      "Excellent communication and technical presentation skills."
+    ],
+    "applicationUrl": null,
+    "postedDate": "a month ago",
+    "sourceUrl": "https://www.levels.fyi/jobs/company/nvidia?locationSlug=united-states&locationSlugs=new-york-city-area%2Cnew-jersey-usa%2Cprinceton-usa-5%2Cphiladelphia-area&minMedianTotalCompensation=200000&standardLevels=mid_staff%2Cprincipal%2Cmanager%2Cdirector%2Cexecutive&jobId=114459153828586182",
+    "extractedAt": "2025-11-04T16:15:38.198Z",
+    "id": "1762272938201-je03kini6",
+    "savedAt": "2025-11-04T16:15:38.201Z"
+  },
+  {
+    "title": "Manager, Systems Software Engineering - Agentic Applications",
+    "company": "Nvidia",
+    "location": [
+      "New York, United States",
+      "California, United States",
+      "Virginia, United States",
+      "North Carolina, United States",
+      "Durham, NC"
+    ],
+    "description": "Conceptualize, design, develop, and implement agentic AI blueprints (applications) that show enterprises how to deploy this technology. Lead an applied research and development team focused on agentic AI blueprints.",
+    "salary_lower_bound": 224000,
+    "salary_upper_bound": 356500,
+    "salary_currency": "USD",
+    "requirements": [
+      "BS or MS in Computer Engineering, Computer Science, or a closely related quantitative field (or equivalent experience)",
+      "8+ years of experience in software engineering or system architecture with a strong focus on Python, C++, or Go Development.",
+      "3+ years of experience as a leader/manager of a multi-functional team, providing sustainable professional development, growth, and technical mentorship."
+    ],
+    "applicationUrl": null,
+    "postedDate": "11 days ago",
+    "sourceUrl": "https://www.levels.fyi/jobs/company/nvidia?locationSlug=united-states&locationSlugs=new-york-city-area%2Cnew-jersey-usa%2Cprinceton-usa-5%2Cphiladelphia-area&minMedianTotalCompensation=200000&standardLevels=mid_staff%2Cprincipal%2Cmanager%2Cdirector%2Cexecutive&jobId=104930432130130630",
+    "extractedAt": "2025-11-04T16:16:51.903Z",
+    "id": "1762273011907-b06c5upbp",
+    "savedAt": "2025-11-04T16:16:51.907Z"
+  },
+  {
+    "title": "Backend Software Engineer, Enterprise Agents",
+    "company": "OpenAI",
+    "location": [
+      "San Francisco",
+      "New York City"
+    ],
+    "description": "Leverage Engineering - San Francisco and New York City. Apply now (opens in a new window). About the Team... etc.",
+    "salary_lower_bound": 325000,
+    "salary_upper_bound": 405000,
+    "salary_currency": "USD",
+    "requirements": [
+      "7+ years of professional engineering experience (excluding internships) in relevant roles at tech and product-driven companies",
+      "Former founder, or early engineer at a startup who has built a product from scratch is a plus",
+      "Proficiency with JavaScript, React, and other web technologies",
+      "Proficiency with a backend language (we use Python)",
+      "Some experience with relational databases like Postgres/MySQL",
+      "Interest in AI/ML (direct experience not required)",
+      "Proven ability to thrive in fast-growing, product-driven companies by effectively navigating loosely defined tasks and managing competing priorities or deadlines"
+    ],
+    "applicationUrl": null,
+    "postedDate": null,
+    "sourceUrl": "https://openai.com/careers/backend-software-engineer-enterprise-agents-san-francisco/",
+    "extractedAt": "2025-11-04T16:19:51.021Z",
+    "id": "1762273191023-cv1f5rzi7",
+    "savedAt": "2025-11-04T16:19:51.023Z"
+  },
+  {
+    "title": "Community Affairs Lead - Stargate",
+    "company": "OpenAI",
+    "location": [
+      "Datacenter Design",
+      "Remote",
+      "US"
+    ],
+    "description": "Primary bridge between OpenAI and the communities where we develop data centers.",
+    "salary_lower_bound": 192000,
+    "salary_upper_bound": 236000,
+    "salary_currency": "USD",
+    "requirements": [
+      "8+ years in community affairs, public engagement, or corporate communications",
+      "Proven track record engaging diverse community stakeholders for large infrastructure or technology projects",
+      "Strong public speaking and facilitation skills",
+      "Ability to manage sensitive political and reputational issues",
+      "Experience integrating community benefits (workforce, education, infrastructure support) into development strategies",
+      "Collaborative and adaptable, with experience working across government, community, and corporate teams"
+    ],
+    "applicationUrl": "https://openai.com/careers/community-affairs-lead-stargate-remote-us/",
+    "postedDate": null,
+    "sourceUrl": "https://openai.com/careers/community-affairs-lead-stargate-remote-us/",
+    "extractedAt": "2025-11-04T16:19:58.565Z",
+    "id": "1762273198567-4wqgdr38u",
+    "savedAt": "2025-11-04T16:19:58.567Z"
+  },
+  {
+    "title": "Full Stack Software Engineer, Enterprise Agents",
+    "company": "OpenAI",
+    "location": [
+      "San Francisco",
+      "New York City"
+    ],
+    "description": "Leverage Engineering - Full Stack Software Engineer, Enterprise Agents",
+    "salary_lower_bound": 325000,
+    "salary_upper_bound": 405000,
+    "salary_currency": "USD",
+    "requirements": [
+      "4+ years of professional engineering experience (excluding internships) in relevant roles at tech and product-driven companies",
+      "Former founder, or early engineer at a startup who has built a product from scratch is a plus",
+      "Proficiency with JavaScript, React, and other web technologies",
+      "Proficiency with a backend language (we use Python)",
+      "Some experience with relational databases like Postgres/MySQL",
+      "Interest in AI/ML (direct experience not required)",
+      "Proven ability to thrive in fast-growing, product-driven companies by effectively navigating loosely defined tasks and managing competing priorities or deadlines"
+    ],
+    "applicationUrl": "https://openai.com/careers/full-stack-software-engineer-enterprise-agents-san-francisco/",
+    "postedDate": null,
+    "sourceUrl": "https://openai.com/careers/full-stack-software-engineer-enterprise-agents-san-francisco/",
+    "extractedAt": "2025-11-04T16:21:10.985Z",
+    "id": "1762273270986-o2r5x9yhm",
+    "savedAt": "2025-11-04T16:21:10.987Z"
+  },
+  {
+    "title": "Senior Full-Stack Engineer",
+    "company": "OpenRouter",
+    "location": [
+      "Remote (US)"
+    ],
+    "description": "Build and maintain user-friendly, high-performance interfaces using React and Next.js. Design, implement, and deploy scalable API functionality using Cloudflare Workers and edge-first architectures.",
+    "salary_lower_bound": 175000,
+    "salary_upper_bound": 200000,
+    "salary_currency": "USD",
+    "requirements": [
+      "4+ years of professional experience in full-stack development",
+      "Proficient in React, TypeScript, Next.js, and JS runtimes",
+      "Experience with Cloudflare Workers or other edge-first serverless platforms (bonus points)",
+      "Strong communication skills and a team-oriented attitude",
+      "Cares deeply about user experience, performance, and maintainability"
+    ],
+    "applicationUrl": null,
+    "postedDate": null,
+    "sourceUrl": "https://jobs.ashbyhq.com/openrouter/63265414-7beb-4c2d-ab2a-6b6e80e99703",
+    "extractedAt": "2025-11-05T00:51:10.831Z",
+    "id": "1762303870833-4lqst06m7",
+    "savedAt": "2025-11-05T00:51:10.833Z"
+  },
+  {
+    "title": "Sales Engineer",
+    "company": "OpenRouter",
+    "location": [
+      "Remote (US)"
+    ],
+    "description": "As a Sales Engineer, you'll be the technical quarterback for OpenRouter's enterprise sales cycles.",
+    "salary_lower_bound": null,
+    "salary_upper_bound": null,
+    "salary_currency": null,
+    "requirements": [
+      "5+ years as Sales Engineer, Solutions Engineer, or Solutions Architect in B2B SaaS/API/Infrastructure platforms",
+      "Strong technical background with hands-on experience in software development, APIs, or cloud infrastructure",
+      "Excellent presentation skills with the ability to explain complex technical concepts to varied audiences",
+      "Strong problem-solving skills and ability to architect solutions under pressure",
+      "Customer-first mindset with genuine desire to help customers succeed"
+    ],
+    "applicationUrl": null,
+    "postedDate": null,
+    "sourceUrl": "https://jobs.ashbyhq.com/openrouter/e91371bc-5df2-4362-b95c-0a8c049e31a4",
+    "extractedAt": "2025-11-06T16:16:15.279Z",
+    "id": "1762445775278-8pe4dx6fd",
+    "savedAt": "2025-11-05T00:51:28.892Z"
+  },
+  {
+    "title": "Staff Software Engineer - AI",
+    "company": "Rippling",
+    "location": [
+      "San Francisco, CA",
+      "Seattle, WA",
+      "New York, NY"
+    ],
+    "description": "Design, develop, code and test backend software systems. Ensure operational excellence and scale our data platform capabilities.",
+    "salary_lower_bound": 180000,
+    "salary_upper_bound": 315000,
+    "salary_currency": "USD",
+    "requirements": [
+      "9+ years of industry experience building software at some (or all) levels of the stack",
+      "Experience developing user-facing applications",
+      "Experience in the Ads, Personalization, Sales, or similar domain",
+      "An interest and/or experience in creating agentic AI and LLM use cases"
+    ],
+    "applicationUrl": "https://ats.rippling.com/rippling/jobs/f5063c49-fe2d-45f7-be58-9e8824f653ce",
+    "postedDate": null,
+    "sourceUrl": "https://ats.rippling.com/rippling/jobs/f5063c49-fe2d-45f7-be58-9e8824f653ce",
+    "extractedAt": "2025-11-06T15:43:48.224Z",
+    "id": "1762443828239-1doo9uqhj",
+    "savedAt": "2025-11-06T15:43:48.239Z",
+    "tags": [
+      "ai staff",
+      "ai",
+      "staff"
+    ]
+  },
+  {
+    "title": "Staff Full Stack Software Engineer (Backend) - Employee Experience",
+    "company": "Rippling",
+    "location": [
+      "San Francisco, CA",
+      "New York, NY"
+    ],
+    "description": "Drive development and execution of multiple product features for the Employee Experience team, fostering a culture of collaboration, innovation, and excellence.",
+    "salary_lower_bound": 180000,
+    "salary_upper_bound": 315000,
+    "salary_currency": "USD",
+    "requirements": [
+      "8+ years of professional experience as a software engineer",
+      "Expertise in building distributed services with Python, Golang, or Java",
+      "Experience working in a fast-paced, dynamic environment",
+      "React experience required"
+    ],
+    "applicationUrl": "https://ats.rippling.com/rippling/jobs/ddf01a95-481e-46db-aa6d-e76aed5c9d6a",
+    "postedDate": null,
+    "sourceUrl": "https://ats.rippling.com/rippling/jobs/ddf01a95-481e-46db-aa6d-e76aed5c9d6a",
+    "extractedAt": "2025-11-06T15:47:26.680Z",
+    "id": "1762444046684-kxzgaj175",
+    "savedAt": "2025-11-06T15:47:26.684Z",
+    "tags": [
+      "ai",
+      "in office",
+      "staff"
+    ]
+  },
+  {
+    "title": "Senior Staff Software Engineer - Global Payroll",
+    "company": "Rippling",
+    "location": [
+      "San Francisco, CA"
+    ],
+    "description": "Design and scale the core systems that power global payroll while also owning the end-to-end engineering of mission-critical workflows relied on by hundreds of thousands of employees and administrators.",
+    "salary_lower_bound": 198000,
+    "salary_upper_bound": 346500,
+    "salary_currency": "USD",
+    "requirements": [
+      "10+ years of professional software engineering experience",
+      "Strong track record spanning both platform and product engineering"
+    ],
+    "applicationUrl": "Apply now",
+    "postedDate": null,
+    "sourceUrl": "https://ats.rippling.com/rippling/jobs/631e8120-3e87-4cb2-8083-3bc4324069bd",
+    "extractedAt": "2025-11-06T15:47:57.283Z",
+    "id": "1762444077288-wtcchrkv5",
+    "savedAt": "2025-11-06T15:47:57.288Z",
+    "tags": [
+      "staff",
+      "eor product"
+    ]
+  },
+  {
+    "title": "Senior Staff Software Engineer - Fintech Data Platform",
+    "company": "Rippling",
+    "location": [
+      "San Francisco, CA",
+      "New York, NY",
+      "Seattle, WA"
+    ],
+    "description": "Define and drive the data architecture strategy for Finance Products, establishing the long-term blueprint for data modeling, data flow, and system integration across Payroll, Tax, Payments, Billing, and related domains.",
+    "salary_lower_bound": 180000,
+    "salary_upper_bound": 315000,
+    "salary_currency": "USD",
+    "requirements": [
+      "10+ years of experience in software or data engineering, with a strong emphasis on data architecture, modeling, and distributed data systems.",
+      "Proven ability to design high-integrity financial data systems — including ledgering, reconciliation, and audit frameworks — that operate at global scale.",
+      "Deep experience with relational and analytical data modeling, including event-driven and streaming architectures (e.g., Kafka, Debezium, CDC pipelines).",
+      "Strong understanding of financial data domains such as payroll, tax, payments, or accounting is highly desirable.",
+      "Expertise in SQL and modern data warehousing technologies (e.g., Snowflake, BigQuery, Redshift) as well as data orchestration and transformation tools (e.g., Airflow, dbt).",
+      "Ability to balance technical purity with product velocity, iteratively delivering architecture that supports immediate product needs while setting up long-term scale.",
+      "Excellent communication and collaboration skills, with a track record of influencing architecture across multiple teams and business functions."
+    ],
+    "applicationUrl": null,
+    "postedDate": null,
+    "sourceUrl": "https://ats.rippling.com/rippling/jobs/d3c8bed0-d988-4765-b8a5-a69dde11b676",
+    "extractedAt": "2025-11-06T15:49:24.190Z",
+    "id": "1762444164193-99j5s3rmq",
+    "savedAt": "2025-11-06T15:49:24.193Z",
+    "tags": []
+  },
+  {
+    "title": "Senior Software Engineer - Streaming Infrastructure",
+    "company": "Rippling",
+    "location": [
+      "New York, NY",
+      "San Francisco, CA",
+      "Seattle, WA"
+    ],
+    "description": "Build Unified Data Pipelines, Solve Complex Distributed Systems Challenges, Drive Technical Strategy, Scale Performance, Enhance Reliability, Knowledge Sharing, Operational Support",
+    "salary_lower_bound": 159000,
+    "salary_upper_bound": 278250,
+    "salary_currency": "USD",
+    "requirements": [
+      "5+ years of software engineering experience",
+      "Solid understanding of stream processing technologies",
+      "Experience with distributed systems and database technologies",
+      "Proficiency in at least one JVM language or Python",
+      "Ability to collaborate effectively"
+    ],
+    "applicationUrl": "https://ats.rippling.com/rippling/jobs/4738d6df-88b4-48b8-b593-9f09ee846103",
+    "postedDate": null,
+    "sourceUrl": "https://ats.rippling.com/rippling/jobs/4738d6df-88b4-48b8-b593-9f09ee846103",
+    "extractedAt": "2025-11-06T15:50:21.982Z",
+    "id": "1762444221986-1ff335n5j",
+    "savedAt": "2025-11-06T15:50:21.986Z",
+    "tags": []
+  },
+  {
+    "title": "Senior Backend Engineer [TypeScript] (Prisma ORM)",
+    "company": "Prisma",
+    "location": [
+      "Product Development  Remote (Berlin",
+      "Berlin",
+      "DE)  Remote (Munich",
+      "Bavaria",
+      "DE)  Remote (Frankfurt am Main",
+      "Hessen",
+      "DE)  Remote (London",
+      "England",
+      "GB)  Remote (Dublin",
+      "County Dublin",
+      "IE)  Remote (Glasgow",
+      "Scotland",
+      "GB)  Remote (Cardiff",
+      "Wales",
+      "GB)  Remote (Paris",
+      "Île-de-France",
+      "FR)  Remote (Amsterdam",
+      "North Holland",
+      "NL)  Remote (Brussels",
+      "Brussels",
+      "BE)  Remote (Oslo",
+      "Oslo",
+      "NO)  Remote (Stockholm",
+      "Stockholm County",
+      "SE)  Remote (Helsinki",
+      "Uusimaa",
+      "FI)  Remote (Copenhagen",
+      "DK)  Remote (Budapest",
+      "HU)  Remote (Lisbon",
+      "Lisbon",
+      "PT)  Remote (Madrid",
+      "Community of Madrid",
+      "ES)  Remote (Prague",
+      "Prague",
+      "CZ)  Remote (Rome",
+      "Lazio",
+      "IT)  Remote (Vienna",
+      "Vienna",
+      "AT)  Remote (Warsaw",
+      "Masovian Voivodeship",
+      "PL)  Remote (Zagreb",
+      "HR)  Remote (Bucharest",
+      "Bucharest",
+      "RO)  Remote (Sofia",
+      "Sofia City Province",
+      "BG)  Remote (Tallinn",
+      "Harju County",
+      "EE)"
+    ],
+    "description": "Join Prisma... to deliver a market-leading ORM. A typical day at Prisma might include: Expanding the Prisma Client to support advanced database capabilities.",
+    "salary_lower_bound": null,
+    "salary_upper_bound": null,
+    "salary_currency": "USD",
+    "requirements": [
+      "5+ years of professional experience as a Senior Software Engineer (or equivalent senior-level role) with a proven track record of delivering production-grade systems.",
+      "Deep backend engineering expertise with JavaScript and TypeScript, writing clean, maintainable, and scalable codebases.",
+      "Strong database proficiency: Hands-on experience with high-scale, data-intensive systems."
+    ],
+    "applicationUrl": null,
+    "postedDate": null,
+    "sourceUrl": "https://ats.rippling.com/prisma-careers/jobs/b7a666d2-b726-4cbb-a5b8-6e5bf60781bb",
+    "extractedAt": "2025-11-10T05:30:23.895Z",
+    "id": "1762752352324-gv3t17jjy",
+    "savedAt": "2025-11-10T05:25:47.159Z",
+    "tags": [],
+    "excluded": false
+  }
+]

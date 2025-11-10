@@ -382,6 +382,50 @@
       background: #5568d3;
     }
 
+    .application-status {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .application-status.started {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .application-status.submitted {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .application-status.rejected {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .application-status.accepted {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .start-application-btn {
+      padding: 5px 10px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .start-application-btn:hover {
+      background: #218838;
+    }
+
     .modal {
       display: none;
       position: fixed;
@@ -870,6 +914,24 @@
         `;
       }
 
+      // Format application status
+      let applicationHtml = '';
+      if (job.application) {
+        const status = job.application.status || 'started';
+        const statusLabels = {
+          'started': 'Application Started',
+          'submitted': 'Application Submitted',
+          'rejected': 'Rejected',
+          'accepted': 'Accepted'
+        };
+        applicationHtml = `
+          <div class="application-status ${status}">
+            ${statusLabels[status] || status}
+            ${job.application.started_at ? ` (${new Date(job.application.started_at).toLocaleDateString()})` : ''}
+          </div>
+        `;
+      }
+
       // Format date
       const date = job.postedDate || job.extractedAt
         ? new Date(job.postedDate || job.extractedAt).toLocaleDateString()
@@ -885,10 +947,12 @@
         ${salaryHtml}
         ${requirementsHtml}
         ${tagsHtml}
+        ${applicationHtml}
         <div class="job-footer">
           <div class="job-links">
             ${job.sourceUrl ? `<a href="${job.sourceUrl}" target="_blank" class="job-link">View Original</a>` : ''}
             ${job.applicationUrl ? `<a href="${job.applicationUrl}" target="_blank" class="job-link">Apply</a>` : ''}
+            ${!job.application ? `<button class="start-application-btn" onclick="startApplication('${job.id}')">Start Application</button>` : ''}
             <button class="edit-btn" onclick="openEditModal('${job.id}')">Edit</button>
           </div>
           <div class="job-date">${date}</div>
@@ -1074,8 +1138,51 @@
       }
     });
 
-    // Make openEditModal available globally
+    // Start application
+    async function startApplication(jobId) {
+      if (!confirm('Start an application for this job?')) {
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/applications', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            job_id: jobId,
+            status: 'started'
+          })
+        });
+
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          throw new Error(`Server returned non-JSON response: ${text.substring(0, 200)}`);
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Reload jobs to show updated application status
+          loadJobs();
+        } else {
+          if (result.error && result.error.includes('already exists')) {
+            alert('Application already exists for this job');
+          } else {
+            alert('Error starting application: ' + result.error);
+          }
+        }
+      } catch (error) {
+        alert('Error starting application: ' + error.message);
+        console.error('Start application error:', error);
+      }
+    }
+
+    // Make functions available globally
     window.openEditModal = openEditModal;
+    window.startApplication = startApplication;
 
     // Load jobs on page load
     loadJobs();
