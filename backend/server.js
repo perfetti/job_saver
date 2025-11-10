@@ -482,6 +482,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'gallery.html'));
 });
 
+// GET /applications.html - Serve applications list page
+app.get('/applications.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'applications.html'));
+});
+
+// GET /application.html - Serve application detail page
+app.get('/application.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'application.html'));
+});
+
 // Initialize database and start server
 async function startServer() {
   try {

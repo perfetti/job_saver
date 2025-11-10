@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applications - Job Saver</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .nav-link {
+      color: #667eea;
+      text-decoration: none;
+      padding: 8px 16px;
+      border: 2px solid #667eea;
+      border-radius: 5px;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .stat {
+      padding: 10px 20px;
+      background: #f5f5f5;
+      border-radius: 5px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .filter-controls {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-select {
+      padding: 10px 15px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      background: white;
+      cursor: pointer;
+    }
+
+    .applications-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .application-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .application-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .application-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 15px;
+    }
+
+    .application-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .application-company {
+      font-size: 16px;
+      color: #667eea;
+      margin-bottom: 5px;
+    }
+
+    .application-status {
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .application-status.started {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .application-status.submitted {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .application-status.rejected {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .application-status.accepted {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .application-dates {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .application-notes {
+      margin-top: 15px;
+      padding: 10px;
+      background: #f5f5f5;
+      border-radius: 5px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: white;
+      font-size: 18px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      border-radius: 10px;
+      color: #666;
+    }
+
+    .empty-state h2 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>My Applications</h1>
+      <p>Track all your job applications</p>
+      <div class="nav-links">
+        <a href="/" class="nav-link">← Back to Gallery</a>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Total Applications</div>
+          <div class="stat-value" id="totalApplications">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Active</div>
+          <div class="stat-value" id="activeApplications">0</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="filter-controls">
+      <select class="filter-select" id="statusFilter">
+        <option value="">All Statuses</option>
+        <option value="started">Started</option>
+        <option value="submitted">Submitted</option>
+        <option value="rejected">Rejected</option>
+        <option value="accepted">Accepted</option>
+      </select>
+      <button class="filter-select" id="refreshBtn" style="cursor: pointer; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; font-weight: 600;">Refresh</button>
+    </div>
+
+    <div id="applicationsContainer">
+      <div class="loading">Loading applications...</div>
+    </div>
+  </div>
+
+  <script>
+    let allApplications = [];
+
+    // Load applications
+    async function loadApplications() {
+      const container = document.getElementById('applicationsContainer');
+      container.innerHTML = '<div class="loading">Loading applications...</div>';
+
+      try {
+        const response = await fetch('/api/jobs');
+        const data = await response.json();
+
+        if (data.success) {
+          // Filter jobs that have applications
+          allApplications = data.jobs
+            .filter(job => job.application)
+            .map(job => ({
+              ...job.application,
+              job: job
+            }));
+
+          updateStats();
+          renderApplications(allApplications);
+        } else {
+          container.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+        }
+      } catch (error) {
+        container.innerHTML = `<div class="error">Error loading applications: ${error.message}</div>`;
+      }
+    }
+
+    // Update statistics
+    function updateStats() {
+      document.getElementById('totalApplications').textContent = allApplications.length;
+      const active = allApplications.filter(app =>
+        app.status === 'started' || app.status === 'submitted'
+      ).length;
+      document.getElementById('activeApplications').textContent = active;
+    }
+
+    // Render applications
+    function renderApplications(applications) {
+      const container = document.getElementById('applicationsContainer');
+
+      if (applications.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h2>No applications found</h2>
+            <p>Start tracking applications from the job gallery!</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = '<div class="applications-list"></div>';
+      const list = container.querySelector('.applications-list');
+
+      applications.forEach(app => {
+        const card = createApplicationCard(app);
+        list.appendChild(card);
+      });
+    }
+
+    // Create application card
+    function createApplicationCard(app) {
+      const card = document.createElement('div');
+      card.className = 'application-card';
+      card.onclick = () => {
+        window.location.href = `/application.html?id=${app.id}`;
+      };
+
+      const job = app.job;
+      const statusLabels = {
+        'started': 'Started',
+        'submitted': 'Submitted',
+        'rejected': 'Rejected',
+        'accepted': 'Accepted'
+      };
+
+      const startedDate = app.started_at
+        ? new Date(app.started_at).toLocaleDateString()
+        : 'N/A';
+      const submittedDate = app.submitted_at
+        ? new Date(app.submitted_at).toLocaleDateString()
+        : null;
+
+      card.innerHTML = `
+        <div class="application-header">
+          <div>
+            <div class="application-title">${escapeHtml(job.title || 'Untitled')}</div>
+            <div class="application-company">${escapeHtml(job.company || 'Unknown Company')}</div>
+          </div>
+          <div class="application-status ${app.status}">
+            ${statusLabels[app.status] || app.status}
+          </div>
+        </div>
+        <div class="application-dates">
+          <div><strong>Started:</strong> ${startedDate}</div>
+          ${submittedDate ? `<div><strong>Submitted:</strong> ${submittedDate}</div>` : ''}
+        </div>
+        ${app.notes ? `<div class="application-notes"><strong>Notes:</strong> ${escapeHtml(app.notes)}</div>` : ''}
+      `;
+
+      return card;
+    }
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Filter applications
+    function filterApplications() {
+      const statusFilter = document.getElementById('statusFilter').value;
+
+      const filtered = allApplications.filter(app => {
+        const matchesStatus = !statusFilter || app.status === statusFilter;
+        return matchesStatus;
+      });
+
+      renderApplications(filtered);
+    }
+
+    // Event listeners
+    document.getElementById('statusFilter').addEventListener('change', filterApplications);
+    document.getElementById('refreshBtn').addEventListener('click', loadApplications);
+
+    // Load applications on page load
+    loadApplications();
+  </script>
+</body>
+</html>
+

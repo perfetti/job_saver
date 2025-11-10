@@ -389,6 +389,12 @@
       font-size: 13px;
       font-weight: 600;
       display: inline-block;
+      transition: all 0.2s;
+    }
+
+    .application-status:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .application-status.started {
@@ -564,6 +570,13 @@
     <header>
       <h1>Job Gallery</h1>
       <p>All your saved job postings</p>
+      <div style="margin-top: 15px;">
+        <a href="/applications.html" style="color: #667eea; text-decoration: none; padding: 8px 16px; border: 2px solid #667eea; border-radius: 5px; display: inline-block; transition: all 0.2s;"
+           onmouseover="this.style.background='#667eea'; this.style.color='white';"
+           onmouseout="this.style.background='transparent'; this.style.color='#667eea';">
+          View All Applications →
+        </a>
+      </div>
       <div class="stats">
         <div class="stat">
           <div class="stat-label">Total Jobs</div>
@@ -572,6 +585,10 @@
         <div class="stat">
           <div class="stat-label">Companies</div>
           <div class="stat-value" id="totalCompanies">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Applications</div>
+          <div class="stat-value" id="applicationsCount">0</div>
         </div>
       </div>
       <div class="exclusion-stats">
@@ -722,6 +739,13 @@
       const nonExcludedCount = allJobs.length - excludedCount;
       document.getElementById('excludedCount').textContent = excludedCount;
       document.getElementById('nonExcludedCount').textContent = nonExcludedCount;
+
+      // Update applications count if element exists
+      const applicationsCountEl = document.getElementById('applicationsCount');
+      if (applicationsCountEl) {
+        const applicationsCount = allJobs.filter(job => job.application).length;
+        applicationsCountEl.textContent = applicationsCount;
+      }
     }
 
     // Update company filter dropdown
@@ -925,10 +949,12 @@
           'accepted': 'Accepted'
         };
         applicationHtml = `
-          <div class="application-status ${status}">
-            ${statusLabels[status] || status}
-            ${job.application.started_at ? ` (${new Date(job.application.started_at).toLocaleDateString()})` : ''}
-          </div>
+          <a href="/application.html?id=${job.application.id}" style="text-decoration: none; display: inline-block;" title="Click to view/edit application">
+            <div class="application-status ${status}" style="cursor: pointer;">
+              ${statusLabels[status] || status}
+              ${job.application.started_at ? ` (${new Date(job.application.started_at).toLocaleDateString()})` : ''}
+            </div>
+          </a>
         `;
       }
 
