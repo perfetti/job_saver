@@ -11,7 +11,7 @@ const DATA_FILE = path.join(__dirname, 'jobs.json');
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from public directory
+// Note: Static files middleware moved to end to ensure API routes are matched first
 
 // Initialize jobs file if it doesn't exist
 if (!fs.existsSync(DATA_FILE)) {
@@ -147,6 +147,44 @@ app.post('/api/jobs', (req, res) => {
   }
 });
 
+// PUT /api/jobs/:id - Update a job
+app.put('/api/jobs/:id', (req, res) => {
+  try {
+    const jobs = readJobs();
+    const jobIndex = jobs.findIndex(j => j.id === req.params.id);
+
+    if (jobIndex === -1) {
+      return res.status(404).json({ success: false, error: 'Job not found' });
+    }
+
+    const jobData = req.body;
+
+    // Validate required fields
+    if (!jobData.title || !jobData.company) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: title and company are required'
+      });
+    }
+
+    // Preserve original ID and savedAt
+    const originalId = jobs[jobIndex].id;
+    const originalSavedAt = jobs[jobIndex].savedAt;
+
+    // Update the job
+    Object.assign(jobs[jobIndex], jobData);
+    jobs[jobIndex].id = originalId; // Keep original ID
+    jobs[jobIndex].savedAt = originalSavedAt; // Keep original save time
+    jobs[jobIndex].extractedAt = new Date().toISOString(); // Update extraction time
+
+    writeJobs(jobs);
+
+    res.json({ success: true, job: jobs[jobIndex], message: 'Job updated successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // PUT /api/jobs/:id/tags - Update tags for a job
 app.put('/api/jobs/:id/tags', (req, res) => {
   try {
@@ -183,6 +221,9 @@ app.delete('/api/jobs/:id', (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
+
+// Serve static files from public directory (after API routes)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // GET / - Serve gallery page
 app.get('/', (req, res) => {

@@ -254,6 +254,265 @@
       margin-bottom: 10px;
       color: #333;
     }
+
+    .view-toggle {
+      display: flex;
+      gap: 5px;
+      margin-left: auto;
+    }
+
+    .view-btn {
+      padding: 10px 20px;
+      background: white;
+      color: #667eea;
+      border: 2px solid #667eea;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .view-btn.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .view-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .exclusion-stats {
+      display: flex;
+      gap: 20px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+
+    .exclusion-stat {
+      padding: 10px 20px;
+      background: #f5f5f5;
+      border-radius: 5px;
+    }
+
+    .exclusion-stat.excluded {
+      background: #ffebee;
+    }
+
+    .exclusion-stat.excluded .stat-label {
+      color: #d32f2f;
+    }
+
+    .exclusion-stat.excluded .stat-value {
+      color: #d32f2f;
+    }
+
+    .exclusion-stat.non-excluded {
+      background: #e8f5e9;
+    }
+
+    .exclusion-stat.non-excluded .stat-label {
+      color: #2e7d32;
+    }
+
+    .exclusion-stat.non-excluded .stat-value {
+      color: #2e7d32;
+    }
+
+    .jobs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .jobs-list .job-card {
+      width: 100%;
+    }
+
+    .hierarchy-view {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .company-group {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .company-header {
+      font-size: 24px;
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .company-jobs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 15px;
+    }
+
+    .view-info {
+      background: #f5f5f5;
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .edit-btn {
+      padding: 5px 10px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .edit-btn:hover {
+      background: #5568d3;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      overflow: auto;
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h2 {
+      color: #667eea;
+      margin: 0;
+    }
+
+    .close-btn {
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .close-btn:hover {
+      color: #000;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+    }
   </style>
 </head>
 <body>
@@ -271,6 +530,16 @@
           <div class="stat-value" id="totalCompanies">0</div>
         </div>
       </div>
+      <div class="exclusion-stats">
+        <div class="exclusion-stat non-excluded">
+          <div class="stat-label">Non-Excluded</div>
+          <div class="stat-value" id="nonExcludedCount">0</div>
+        </div>
+        <div class="exclusion-stat excluded">
+          <div class="stat-label">Excluded</div>
+          <div class="stat-value" id="excludedCount">0</div>
+        </div>
+      </div>
     </header>
 
     <div class="controls">
@@ -286,6 +555,10 @@
       <select class="filter-select" id="tagFilter">
         <option value="">All Tags</option>
       </select>
+      <div class="view-toggle">
+        <button class="view-btn active" id="listViewBtn" data-view="list">List View</button>
+        <button class="view-btn" id="hierarchyViewBtn" data-view="hierarchy">Hierarchy View</button>
+      </div>
       <button class="refresh-btn" id="refreshBtn">Refresh</button>
     </div>
 
@@ -294,8 +567,82 @@
     </div>
   </div>
 
+  <!-- Edit Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Edit Job</h2>
+        <button class="close-btn" id="closeModal">&times;</button>
+      </div>
+      <form id="editForm">
+        <div class="form-group">
+          <label for="editTitle">Title *</label>
+          <input type="text" id="editTitle" required>
+        </div>
+        <div class="form-group">
+          <label for="editCompany">Company *</label>
+          <input type="text" id="editCompany" required>
+        </div>
+        <div class="form-group">
+          <label for="editLocation">Location</label>
+          <input type="text" id="editLocation" placeholder="e.g., New York, NY or Remote">
+        </div>
+        <div class="form-group">
+          <label for="editDescription">Description</label>
+          <textarea id="editDescription"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="editSalaryLower">Salary Lower Bound</label>
+            <input type="number" id="editSalaryLower">
+          </div>
+          <div class="form-group">
+            <label for="editSalaryUpper">Salary Upper Bound</label>
+            <input type="number" id="editSalaryUpper">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="editSalaryCurrency">Currency</label>
+          <select id="editSalaryCurrency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="CAD">CAD</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="editRequirements">Requirements (one per line)</label>
+          <textarea id="editRequirements" placeholder="Enter requirements, one per line"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="editSourceUrl">Source URL</label>
+          <input type="url" id="editSourceUrl">
+        </div>
+        <div class="form-group">
+          <label for="editApplicationUrl">Application URL</label>
+          <input type="url" id="editApplicationUrl">
+        </div>
+        <div class="form-group">
+          <label for="editPostedDate">Posted Date</label>
+          <input type="date" id="editPostedDate">
+        </div>
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="editExcluded">
+          <label for="editExcluded" style="margin: 0;">Excluded</label>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="cancelEdit">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+        <input type="hidden" id="editJobId">
+      </form>
+    </div>
+  </div>
+
   <script>
     let allJobs = [];
+    let currentView = 'list'; // 'list' or 'hierarchy'
+    let currentEditingJob = null;
 
     // Load jobs from API
     async function loadJobs() {
@@ -325,6 +672,12 @@
       document.getElementById('totalJobs').textContent = allJobs.length;
       const companies = new Set(allJobs.map(job => job.company).filter(Boolean));
       document.getElementById('totalCompanies').textContent = companies.size;
+
+      // Update excluded/non-excluded counts
+      const excludedCount = allJobs.filter(job => job.excluded === true).length;
+      const nonExcludedCount = allJobs.length - excludedCount;
+      document.getElementById('excludedCount').textContent = excludedCount;
+      document.getElementById('nonExcludedCount').textContent = nonExcludedCount;
     }
 
     // Update company filter dropdown
@@ -361,7 +714,7 @@
       });
     }
 
-    // Render jobs
+    // Render jobs based on current view
     function renderJobs(jobs) {
       const container = document.getElementById('jobsContainer');
 
@@ -375,12 +728,91 @@
         return;
       }
 
-      container.innerHTML = '<div class="jobs-grid"></div>';
-      const grid = container.querySelector('.jobs-grid');
+      // Calculate counts for current filtered jobs
+      const excludedCount = jobs.filter(job => job.excluded === true).length;
+      const nonExcludedCount = jobs.length - excludedCount;
 
+      if (currentView === 'list') {
+        renderListView(jobs, excludedCount, nonExcludedCount);
+      } else {
+        renderHierarchyView(jobs, excludedCount, nonExcludedCount);
+      }
+    }
+
+    // Render list view
+    function renderListView(jobs, excludedCount, nonExcludedCount) {
+      const container = document.getElementById('jobsContainer');
+
+      container.innerHTML = `
+        <div class="view-info">
+          <strong>List View:</strong> Showing ${jobs.length} job(s) -
+          <span style="color: #2e7d32;">${nonExcludedCount} non-excluded</span>,
+          <span style="color: #d32f2f;">${excludedCount} excluded</span>
+        </div>
+        <div class="jobs-list"></div>
+      `;
+
+      const list = container.querySelector('.jobs-list');
       jobs.forEach(job => {
         const card = createJobCard(job);
-        grid.appendChild(card);
+        list.appendChild(card);
+      });
+    }
+
+    // Render hierarchy view (grouped by company)
+    function renderHierarchyView(jobs, excludedCount, nonExcludedCount) {
+      const container = document.getElementById('jobsContainer');
+
+      container.innerHTML = `
+        <div class="view-info">
+          <strong>Hierarchy View:</strong> Showing ${jobs.length} job(s) -
+          <span style="color: #2e7d32;">${nonExcludedCount} non-excluded</span>,
+          <span style="color: #d32f2f;">${excludedCount} excluded</span>
+        </div>
+        <div class="hierarchy-view"></div>
+      `;
+
+      const hierarchy = container.querySelector('.hierarchy-view');
+
+      // Group jobs by company
+      const jobsByCompany = {};
+      jobs.forEach(job => {
+        const company = job.company || 'Unknown Company';
+        if (!jobsByCompany[company]) {
+          jobsByCompany[company] = [];
+        }
+        jobsByCompany[company].push(job);
+      });
+
+      // Sort companies alphabetically
+      const sortedCompanies = Object.keys(jobsByCompany).sort();
+
+      sortedCompanies.forEach(company => {
+        const companyJobs = jobsByCompany[company];
+        const companyExcluded = companyJobs.filter(job => job.excluded === true).length;
+        const companyNonExcluded = companyJobs.length - companyExcluded;
+
+        const companyGroup = document.createElement('div');
+        companyGroup.className = 'company-group';
+        companyGroup.innerHTML = `
+          <div class="company-header">
+            ${escapeHtml(company)}
+            <span style="font-size: 14px; font-weight: normal; color: #666; margin-left: 10px;">
+              (${companyJobs.length} job${companyJobs.length !== 1 ? 's' : ''} -
+              <span style="color: #2e7d32;">${companyNonExcluded} non-excluded</span>,
+              <span style="color: #d32f2f;">${companyExcluded} excluded</span>)
+            </span>
+          </div>
+          <div class="company-jobs"></div>
+        `;
+
+        const companyJobsContainer = companyGroup.querySelector('.company-jobs');
+        companyJobs.forEach(job => {
+          const card = createJobCard(job);
+          companyJobsContainer.appendChild(card);
+        });
+
+        hierarchy.appendChild(companyGroup);
       });
     }
 
@@ -457,6 +889,7 @@
           <div class="job-links">
             ${job.sourceUrl ? `<a href="${job.sourceUrl}" target="_blank" class="job-link">View Original</a>` : ''}
             ${job.applicationUrl ? `<a href="${job.applicationUrl}" target="_blank" class="job-link">Apply</a>` : ''}
+            <button class="edit-btn" onclick="openEditModal('${job.id}')">Edit</button>
           </div>
           <div class="job-date">${date}</div>
         </div>
@@ -501,11 +934,148 @@
       renderJobs(filtered);
     }
 
+    // Switch view
+    function switchView(view) {
+      currentView = view;
+
+      // Update button states
+      document.getElementById('listViewBtn').classList.toggle('active', view === 'list');
+      document.getElementById('hierarchyViewBtn').classList.toggle('active', view === 'hierarchy');
+
+      // Re-render with current filters
+      filterJobs();
+    }
+
+    // Open edit modal
+    function openEditModal(jobId) {
+      const job = allJobs.find(j => j.id === jobId);
+      if (!job) return;
+
+      currentEditingJob = job;
+      const modal = document.getElementById('editModal');
+
+      // Populate form
+      document.getElementById('editJobId').value = job.id;
+      document.getElementById('editTitle').value = job.title || '';
+      document.getElementById('editCompany').value = job.company || '';
+      document.getElementById('editLocation').value = Array.isArray(job.location)
+        ? job.location.join(', ')
+        : (job.location || '');
+      document.getElementById('editDescription').value = job.description || '';
+      document.getElementById('editSalaryLower').value = job.salary_lower_bound || '';
+      document.getElementById('editSalaryUpper').value = job.salary_upper_bound || '';
+      document.getElementById('editSalaryCurrency').value = job.salary_currency || 'USD';
+      document.getElementById('editRequirements').value = Array.isArray(job.requirements)
+        ? job.requirements.join('\n')
+        : (job.requirements || '');
+      document.getElementById('editSourceUrl').value = job.sourceUrl || '';
+      document.getElementById('editApplicationUrl').value = job.applicationUrl || '';
+      document.getElementById('editExcluded').checked = job.excluded === true;
+
+      // Set posted date
+      if (job.postedDate) {
+        try {
+          const date = new Date(job.postedDate);
+          if (!isNaN(date.getTime())) {
+            document.getElementById('editPostedDate').value = date.toISOString().split('T')[0];
+          }
+        } catch (e) {
+          // Invalid date, leave empty
+        }
+      }
+
+      modal.style.display = 'block';
+    }
+
+    // Close edit modal
+    function closeEditModal() {
+      const modal = document.getElementById('editModal');
+      modal.style.display = 'none';
+      currentEditingJob = null;
+      document.getElementById('editForm').reset();
+    }
+
+    // Save edited job
+    async function saveEditedJob(e) {
+      e.preventDefault();
+
+      const jobId = document.getElementById('editJobId').value;
+      const locationValue = document.getElementById('editLocation').value.trim();
+      const requirementsValue = document.getElementById('editRequirements').value.trim();
+
+      const jobData = {
+        title: document.getElementById('editTitle').value.trim(),
+        company: document.getElementById('editCompany').value.trim(),
+        location: locationValue ? (locationValue.includes(',') ? locationValue.split(',').map(s => s.trim()) : locationValue) : null,
+        description: document.getElementById('editDescription').value.trim() || null,
+        salary_lower_bound: document.getElementById('editSalaryLower').value ? parseInt(document.getElementById('editSalaryLower').value) : null,
+        salary_upper_bound: document.getElementById('editSalaryUpper').value ? parseInt(document.getElementById('editSalaryUpper').value) : null,
+        salary_currency: document.getElementById('editSalaryCurrency').value || null,
+        requirements: requirementsValue ? requirementsValue.split('\n').filter(r => r.trim()) : [],
+        sourceUrl: document.getElementById('editSourceUrl').value.trim() || null,
+        applicationUrl: document.getElementById('editApplicationUrl').value.trim() || null,
+        postedDate: document.getElementById('editPostedDate').value || null,
+        excluded: document.getElementById('editExcluded').checked
+      };
+
+      try {
+        const response = await fetch(`/api/jobs/${jobId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(jobData)
+        });
+
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          throw new Error(`Server returned non-JSON response (${response.status}): ${text.substring(0, 200)}`);
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Update the job in allJobs array
+          const index = allJobs.findIndex(j => j.id === jobId);
+          if (index !== -1) {
+            allJobs[index] = result.job;
+          }
+
+          closeEditModal();
+          updateStats();
+          filterJobs(); // Re-render with updated data
+        } else {
+          alert('Error updating job: ' + result.error);
+        }
+      } catch (error) {
+        alert('Error updating job: ' + error.message);
+        console.error('Edit error:', error);
+      }
+    }
+
     // Event listeners
     document.getElementById('searchInput').addEventListener('input', filterJobs);
     document.getElementById('companyFilter').addEventListener('change', filterJobs);
     document.getElementById('tagFilter').addEventListener('change', filterJobs);
     document.getElementById('refreshBtn').addEventListener('click', loadJobs);
+    document.getElementById('listViewBtn').addEventListener('click', () => switchView('list'));
+    document.getElementById('hierarchyViewBtn').addEventListener('click', () => switchView('hierarchy'));
+    document.getElementById('editForm').addEventListener('submit', saveEditedJob);
+    document.getElementById('closeModal').addEventListener('click', closeEditModal);
+    document.getElementById('cancelEdit').addEventListener('click', closeEditModal);
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+      const modal = document.getElementById('editModal');
+      if (e.target === modal) {
+        closeEditModal();
+      }
+    });
+
+    // Make openEditModal available globally
+    window.openEditModal = openEditModal;
 
     // Load jobs on page load
     loadJobs();
