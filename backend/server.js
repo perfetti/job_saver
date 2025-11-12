@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
-const { initDatabase, getDb, migrateFromJson, rowToJob, rowToApplication } = require('./db');
+const { initDatabase, getDb, migrateFromJson, rowToJob, rowToApplication, rowToUserProfile } = require('./db');
 
 const app = express();
 const PORT = 3000;
@@ -491,6 +491,306 @@ app.get('/applications.html', (req, res) => {
 app.get('/application.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'application.html'));
 });
+
+// User Profile Routes
+
+// GET /api/profile - Get user profile
+app.get('/api/profile', (req, res) => {
+  const db = getDb();
+
+  db.get('SELECT * FROM user_profile WHERE id = ?', ['default'], (err, row) => {
+    db.close();
+    if (err) {
+      return res.status(500).json({ success: false, error: err.message });
+    }
+
+    if (!row) {
+      return res.json({ success: true, profile: null });
+    }
+
+    res.json({ success: true, profile: rowToUserProfile(row) });
+  });
+});
+
+// POST /api/profile/linkedin - Save LinkedIn URL and extract profile
+app.post('/api/profile/linkedin', async (req, res) => {
+  const { linkedin_url, page_content } = req.body;
+
+  if (!linkedin_url) {
+    return res.status(400).json({
+      success: false,
+      error: 'LinkedIn URL is required'
+    });
+  }
+
+  // Validate LinkedIn URL format
+  if (!linkedin_url.includes('linkedin.com/in/')) {
+    return res.status(400).json({
+      success: false,
+      error: 'Invalid LinkedIn profile URL'
+    });
+  }
+
+  if (!page_content) {
+    return res.status(400).json({
+      success: false,
+      error: 'Page content is required. Please use the Chrome extension to extract the LinkedIn profile page.'
+    });
+  }
+
+  try {
+    // Extract profile data using Ollama with page content
+    const resumeData = await extractLinkedInProfile(linkedin_url, page_content);
+
+    const db = getDb();
+
+    // Check if profile exists
+    db.get('SELECT * FROM user_profile WHERE id = ?', ['default'], (err, existing) => {
+      if (err) {
+        db.close();
+        return res.status(500).json({ success: false, error: err.message });
+      }
+
+      if (existing) {
+        // Update existing profile
+        db.run(`
+          UPDATE user_profile
+          SET linkedin_url = ?, resume_data = ?, updated_at = CURRENT_TIMESTAMP
+          WHERE id = ?
+        `, [linkedin_url, JSON.stringify(resumeData), 'default'], function(updateErr) {
+          if (updateErr) {
+            db.close();
+            return res.status(500).json({ success: false, error: updateErr.message });
+          }
+
+          db.get('SELECT * FROM user_profile WHERE id = ?', ['default'], (getErr, updatedRow) => {
+            db.close();
+            if (getErr) {
+              return res.status(500).json({ success: false, error: getErr.message });
+            }
+            res.json({ success: true, profile: rowToUserProfile(updatedRow), message: 'Profile updated successfully' });
+          });
+        });
+      } else {
+        // Insert new profile
+        db.run(`
+          INSERT INTO user_profile (id, linkedin_url, resume_data)
+          VALUES (?, ?, ?)
+        `, ['default', linkedin_url, JSON.stringify(resumeData)], function(insertErr) {
+          if (insertErr) {
+            db.close();
+            return res.status(500).json({ success: false, error: insertErr.message });
+          }
+
+          db.get('SELECT * FROM user_profile WHERE id = ?', ['default'], (getErr, newRow) => {
+            db.close();
+            if (getErr) {
+              return res.status(500).json({ success: false, error: getErr.message });
+            }
+            res.json({ success: true, profile: rowToUserProfile(newRow), message: 'Profile saved successfully' });
+          });
+        });
+      }
+    });
+  } catch (error) {
+    console.error('Error extracting LinkedIn profile:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// PUT /api/profile/resume - Update resume data
+app.put('/api/profile/resume', (req, res) => {
+  const { resume_data } = req.body;
+
+  if (!resume_data) {
+    return res.status(400).json({
+      success: false,
+      error: 'Resume data is required'
+    });
+  }
+
+  const db = getDb();
+
+  db.run(`
+    UPDATE user_profile
+    SET resume_data = ?, updated_at = CURRENT_TIMESTAMP
+    WHERE id = ?
+  `, [JSON.stringify(resume_data), 'default'], function(err) {
+    if (err) {
+      db.close();
+      return res.status(500).json({ success: false, error: err.message });
+    }
+
+    if (this.changes === 0) {
+      db.close();
+      return res.status(404).json({ success: false, error: 'Profile not found. Please save LinkedIn URL first.' });
+    }
+
+    db.get('SELECT * FROM user_profile WHERE id = ?', ['default'], (getErr, row) => {
+      db.close();
+      if (getErr) {
+        return res.status(500).json({ success: false, error: getErr.message });
+      }
+      res.json({ success: true, profile: rowToUserProfile(row), message: 'Resume updated successfully' });
+    });
+  });
+});
+
+// Helper function to extract LinkedIn profile using Ollama
+async function extractLinkedInProfile(linkedinUrl, pageContent) {
+  try {
+    if (!pageContent) {
+      throw new Error('Page content is required to extract LinkedIn profile');
+    }
+
+    // Limit content size for Ollama
+    const contentText = typeof pageContent === 'string'
+      ? pageContent.substring(0, 20000)
+      : (pageContent.text ? pageContent.text.substring(0, 20000) : '');
+
+    const prompt = `You are a resume extraction assistant. Extract all relevant information from a LinkedIn profile page and structure it as a comprehensive resume object.
+
+IMPORTANT: You must respond with ONLY valid JSON. No markdown, no code blocks, no explanations, just the raw JSON object.
+
+Required JSON structure:
+{
+  "personal_info": {
+    "name": "Full name",
+    "headline": "Professional headline",
+    "location": "Location",
+    "email": "Email if available, otherwise null",
+    "phone": "Phone if available, otherwise null",
+    "linkedin_url": "LinkedIn profile URL",
+    "website": "Personal website if available, otherwise null"
+  },
+  "summary": "Professional summary/about section",
+  "experience": [
+    {
+      "title": "Job title",
+      "company": "Company name",
+      "location": "Location",
+      "start_date": "Start date (YYYY-MM or YYYY-MM-DD format)",
+      "end_date": "End date (YYYY-MM or YYYY-MM-DD format) or 'present' if current",
+      "description": "Job description",
+      "achievements": ["Achievement 1", "Achievement 2"],
+      "skills_used": ["Skill 1", "Skill 2"]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Degree name",
+      "field": "Field of study",
+      "school": "School name",
+      "location": "Location",
+      "start_date": "Start date (YYYY-MM or YYYY format)",
+      "end_date": "End date (YYYY-MM or YYYY format)",
+      "description": "Additional details if available, otherwise null",
+      "gpa": "GPA if available, otherwise null"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Skill name",
+      "category": "Technical, Soft, Language, etc.",
+      "proficiency": "Beginner, Intermediate, Advanced, Expert, or null if unknown"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Certification name",
+      "issuer": "Issuing organization",
+      "issue_date": "Issue date (YYYY-MM or YYYY format)",
+      "expiry_date": "Expiry date if applicable, otherwise null",
+      "credential_id": "Credential ID if available, otherwise null",
+      "credential_url": "URL to verify credential if available, otherwise null"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Project name",
+      "description": "Project description",
+      "start_date": "Start date if available, otherwise null",
+      "end_date": "End date if available, otherwise null",
+      "url": "Project URL if available, otherwise null",
+      "technologies": ["Tech 1", "Tech 2"]
+    }
+  ],
+  "languages": [
+    {
+      "language": "Language name",
+      "proficiency": "Native, Fluent, Conversational, Basic, or null if unknown"
+    }
+  ],
+  "volunteer_experience": [
+    {
+      "role": "Volunteer role",
+      "organization": "Organization name",
+      "start_date": "Start date if available, otherwise null",
+      "end_date": "End date if available, otherwise null",
+      "description": "Description of volunteer work"
+    }
+  ],
+  "publications": [
+    {
+      "title": "Publication title",
+      "publisher": "Publisher name",
+      "date": "Publication date",
+      "url": "URL if available, otherwise null"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Award title",
+      "issuer": "Issuing organization",
+      "date": "Award date",
+      "description": "Description if available, otherwise null"
+    }
+  ]
+}
+
+LinkedIn Profile URL: ${linkedinUrl}
+
+Page Content:
+${contentText}
+
+Extract all available information from this LinkedIn profile page and return ONLY the JSON object. If a section is not available, use an empty array [].`;
+
+    // Call Ollama API
+    const ollamaUrl = 'http://localhost:11434/api/generate';
+    const response = await fetch(ollamaUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'llama3.1:latest',
+        prompt: prompt,
+        stream: false,
+        format: 'json'
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Ollama API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    let jsonString = result.response || result.text || '';
+
+    // Clean up JSON string
+    jsonString = jsonString.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
+    const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      jsonString = jsonMatch[0];
+    }
+
+    const resumeData = JSON.parse(jsonString);
+    return resumeData;
+  } catch (error) {
+    console.error('Error extracting LinkedIn profile:', error);
+    throw new Error(`Failed to extract LinkedIn profile: ${error.message}`);
+  }
+}
 
 // Initialize database and start server
 async function startServer() {

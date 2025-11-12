@@ -1,8 +1,31 @@
-# Job Saver Backend
+# Job Saver Backend - Next.js with TypeScript
 
 Backend server for storing and displaying saved job postings from the Job Saver Chrome Extension.
 
+## Tech Stack
+
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type safety
+- **Prisma** - Database ORM
+- **PostgreSQL** - Database
+- **Ollama** - AI for job and profile extraction
+
 ## Setup
+
+### Prerequisites
+
+1. **PostgreSQL** must be installed and running
+   - Install from: https://www.postgresql.org/download/
+   - Create a database: `createdb job_saver`
+   - Or use a cloud provider like Supabase, Neon, or Railway
+
+2. **Ollama** must be installed and running locally
+   - Download from: https://ollama.ai
+   - Install and start Ollama
+   - Make sure it's running on `http://localhost:11434`
+   - See main README for Chrome extension configuration
+
+### Installation
 
 1. Install dependencies:
 ```bash
@@ -10,138 +33,108 @@ cd backend
 npm install
 ```
 
-2. Start the server:
+2. Set up environment variables:
 ```bash
-npm start
+cp .env.example .env
 ```
 
-For development with auto-reload:
+Edit `.env` and set your PostgreSQL connection string:
+```
+DATABASE_URL="postgresql://user:password@localhost:5432/job_saver?schema=public"
+```
+
+3. Set up the database:
+```bash
+# Generate Prisma Client
+npm run db:generate
+
+# Run migrations
+npm run db:migrate
+```
+
+4. (Optional) Migrate existing data from SQLite:
+   - If you have existing data in `jobs.db`, you can create a migration script
+   - Or manually export/import data
+
+5. Start the development server:
 ```bash
 npm run dev
 ```
 
-3. The server will run on `http://localhost:3000`
-   - Gallery page: `http://localhost:3000`
-   - API endpoint: `http://localhost:3000/api/jobs`
+The server will run on `http://localhost:3000`
+- Gallery page: `http://localhost:3000`
+- API endpoints: `http://localhost:3000/api/*`
 
-**Note:** On first run, the server will:
-- Create a SQLite database (`jobs.db`)
-- Automatically migrate any existing `jobs.json` data to the database
-- Create a backup of `jobs.json` as `jobs.json.backup`
+## Database Management
+
+### Prisma Studio
+View and edit data in a GUI:
+```bash
+npm run db:studio
+```
+
+### Create a new migration
+```bash
+npm run db:migrate
+```
+
+### Reset database (⚠️ deletes all data)
+```bash
+npx prisma migrate reset
+```
 
 ## API Endpoints
 
-### GET /api/jobs
-Get all saved jobs.
+All API routes are in `app/api/`:
 
-**Response:**
-```json
-{
-  "success": true,
-  "jobs": [...],
-  "count": 10
-}
+- `GET /api/jobs` - Get all jobs
+- `POST /api/jobs` - Save a new job
+- `GET /api/jobs/:id` - Get a single job
+- `PUT /api/jobs/:id` - Update a job
+- `DELETE /api/jobs/:id` - Delete a job
+- `PUT /api/jobs/:id/tags` - Update tags
+
+- `POST /api/applications` - Start a new application
+- `GET /api/applications/:id` - Get application by ID
+- `GET /api/applications/job/:jobId` - Get application for a job
+- `PUT /api/applications/:id` - Update an application
+- `DELETE /api/applications/:id` - Delete an application
+
+- `GET /api/profile` - Get user profile
+- `POST /api/profile/linkedin` - Save LinkedIn URL and extract profile
+- `PUT /api/profile/resume` - Update resume data
+
+## Project Structure
+
+```
+backend/
+├── app/
+│   ├── api/              # API routes
+│   ├── (pages)/          # Next.js pages (gallery, applications, etc.)
+│   └── layout.tsx        # Root layout
+├── lib/
+│   ├── prisma.ts         # Prisma client
+│   ├── types.ts          # TypeScript types
+│   └── utils.ts          # Utility functions
+├── prisma/
+│   └── schema.prisma     # Database schema
+└── public/                # Static files (if needed)
 ```
 
-### POST /api/jobs
-Save a new job.
+## Development
 
-**Request Body:**
-```json
-{
-  "title": "Job Title",
-  "company": "Company Name",
-  "location": "Location",
-  "description": "Job description",
-  "salary_lower_bound": 126000,
-  "salary_upper_bound": 255000,
-  "salary_currency": "USD",
-  "requirements": ["Requirement 1", "Requirement 2"],
-  "applicationUrl": "https://...",
-  "postedDate": "2025-10-29",
-  "sourceUrl": "https://..."
-}
-```
+- `npm run dev` - Start development server with hot reload
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
 
-### PUT /api/jobs/:id
-Update a job by ID.
+## Migration from Express/SQLite
 
-### DELETE /api/jobs/:id
-Delete a job by ID.
+If migrating from the old Express/SQLite backend:
 
-## Application Tracking API
+1. Export your data from SQLite (if needed)
+2. Set up PostgreSQL and run migrations
+3. Import data if you have exports
+4. Update Chrome extension to point to new backend URL (if different port)
 
-### POST /api/applications
-Start a new application for a job.
-
-**Request Body:**
-```json
-{
-  "job_id": "job-id-here",
-  "status": "started",
-  "notes": "Optional notes"
-}
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "application": {
-    "id": "application-id",
-    "job_id": "job-id",
-    "status": "started",
-    "started_at": "2025-01-15T10:00:00.000Z",
-    "submitted_at": null,
-    "notes": null
-  }
-}
-```
-
-### GET /api/applications/:job_id
-Get application for a specific job.
-
-### PUT /api/applications/:id
-Update an application (status, submitted date, notes).
-
-**Request Body:**
-```json
-{
-  "status": "submitted",
-  "submitted_at": "2025-01-20T10:00:00.000Z",
-  "notes": "Submitted via company website"
-}
-```
-
-### DELETE /api/applications/:id
-Delete an application.
-
-## Data Storage
-
-Jobs and applications are stored in a **SQLite database** (`jobs.db`). The database includes:
-
-- **jobs table**: All job postings with full details
-- **applications table**: Application tracking linked to jobs via foreign key
-
-### Migration
-
-On first startup, the server automatically:
-1. Creates the database schema
-2. Migrates existing `jobs.json` data (if present)
-3. Creates a backup of the original JSON file
-
-The old `jobs.json` file is preserved as `jobs.json.backup` for safety.
-
-## Gallery Page
-
-The gallery page (`/`) displays all saved jobs with:
-- Search functionality
-- Company filtering
-- Tag filtering
-- List and Hierarchy views
-- Application status tracking
-- **Start Application** button for jobs without applications
-- Application status badges (Started, Submitted, Rejected, Accepted)
-- Edit functionality for all job fields
-- Exclusion tracking with counts
-
+The API endpoints remain the same, so the Chrome extension should work without changes if running on the same port.

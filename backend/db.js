@@ -80,6 +80,23 @@ function initDatabase() {
         }
       });
 
+      // User profile table
+      db.run(`
+        CREATE TABLE IF NOT EXISTS user_profile (
+          id TEXT PRIMARY KEY DEFAULT 'default',
+          linkedin_url TEXT,
+          resume_data TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+      `, (err) => {
+        if (err) {
+          console.error('Error creating user_profile table:', err);
+          reject(err);
+          return;
+        }
+      });
+
       db.close((err) => {
         if (err) {
           console.error('Error closing database:', err);
@@ -220,11 +237,25 @@ function rowToApplication(row) {
   };
 }
 
+// Helper to convert database row to user profile object
+function rowToUserProfile(row) {
+  if (!row) return null;
+
+  return {
+    id: row.id,
+    linkedin_url: row.linkedin_url,
+    resume_data: row.resume_data ? JSON.parse(row.resume_data) : null,
+    created_at: row.created_at,
+    updated_at: row.updated_at
+  };
+}
+
 module.exports = {
   initDatabase,
   getDb,
   migrateFromJson,
   rowToJob,
-  rowToApplication
+  rowToApplication,
+  rowToUserProfile
 };
 
