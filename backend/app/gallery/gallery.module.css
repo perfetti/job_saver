@@ -1,0 +1,564 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.header {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  color: #667eea;
+  margin-bottom: 10px;
+}
+
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.stat {
+  padding: 10px 20px;
+  background: #f5f5f5;
+  border-radius: 5px;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.statValue {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.exclusionStats {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.exclusionStat {
+  padding: 10px 20px;
+  background: #f5f5f5;
+  border-radius: 5px;
+}
+
+.exclusionStat.nonExcluded {
+  background: #e8f5e9;
+}
+
+.exclusionStat.excluded {
+  background: #ffebee;
+}
+
+.applicationsLink {
+  color: #667eea;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 2px solid #667eea;
+  border-radius: 5px;
+  display: inline-block;
+  transition: all 0.2s;
+}
+
+.applicationsLink:hover {
+  background: #667eea;
+  color: white;
+}
+
+.controls {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 15px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.filterSelect {
+  padding: 10px 15px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+}
+
+.refreshBtn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.refreshBtn:hover {
+  transform: translateY(-2px);
+}
+
+.viewToggle {
+  display: flex;
+  gap: 5px;
+  margin-left: auto;
+}
+
+.viewBtn {
+  padding: 10px 20px;
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.viewBtn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.viewBtn:hover {
+  transform: translateY(-2px);
+}
+
+.jobsContainer {
+  margin-top: 20px;
+}
+
+.viewInfo {
+  background: white;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.jobsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.jobCard {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.jobCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.jobHeader {
+  margin-bottom: 15px;
+}
+
+.jobTitle {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.jobCompany {
+  font-size: 16px;
+  color: #667eea;
+  margin-bottom: 5px;
+}
+
+.jobLocation {
+  font-size: 14px;
+  color: #666;
+}
+
+.jobDescription {
+  font-size: 14px;
+  color: #555;
+  margin: 15px 0;
+  line-height: 1.5;
+}
+
+.jobSalary {
+  background: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.salaryRange {
+  font-weight: bold;
+  color: #667eea;
+}
+
+.jobRequirements {
+  margin: 15px 0;
+}
+
+.requirementsTitle {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.requirementsList {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.requirementsList ul {
+  margin-left: 20px;
+}
+
+.jobTags {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tag {
+  background: #667eea;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+}
+
+.applicationStatus {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.applicationStatus[data-status='started'] {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.applicationStatus[data-status='submitted'] {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.applicationStatus[data-status='rejected'] {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.applicationStatus[data-status='accepted'] {
+  background: #d4edda;
+  color: #155724;
+}
+
+.jobFooter {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jobLinks {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.jobLink {
+  color: #667eea;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 5px 10px;
+  border: 1px solid #667eea;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.jobLink:hover {
+  background: #667eea;
+  color: white;
+}
+
+.startApplicationBtn,
+.editBtn {
+  padding: 5px 10px;
+  border: 1px solid #667eea;
+  border-radius: 3px;
+  background: white;
+  color: #667eea;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.startApplicationBtn:hover,
+.editBtn:hover {
+  background: #667eea;
+  color: white;
+}
+
+.jobDate {
+  font-size: 12px;
+  color: #999;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: white;
+  font-size: 18px;
+}
+
+.error {
+  background: #ffebee;
+  color: #d32f2f;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px 0;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 10px;
+  color: #666;
+}
+
+.emptyState h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.hierarchyView {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.companyGroup {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.companyHeader {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #667eea;
+}
+
+.companyStats {
+  font-size: 14px;
+  font-weight: normal;
+  color: #666;
+  margin-left: 10px;
+}
+
+.companyJobs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+/* Modal Styles */
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+}
+
+.modalContent {
+  background-color: white;
+  margin: 5% auto;
+  padding: 0;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  color: #667eea;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  font-weight: bold;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeBtn:hover {
+  color: #333;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.formActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+
+.btnPrimary {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnPrimary:hover {
+  transform: translateY(-2px);
+}
+
+.btnSecondary {
+  padding: 10px 20px;
+  background: #f5f5f5;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnSecondary:hover {
+  background: #e0e0e0;
+}
+
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkboxGroup input[type='checkbox'] {
+  width: auto;
+}
+
