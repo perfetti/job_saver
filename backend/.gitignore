@@ -42,3 +42,7 @@ prisma/migrations/
 jobs.json
 jobs.json.backup
 jobs.db
+
+# test coverage
+coverage/
+*.lcov

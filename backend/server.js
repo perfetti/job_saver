@@ -810,4 +810,10 @@ async function startServer() {
   }
 }
 
-startServer();
+// Export app for testing
+module.exports = app;
+
+// Only start server if not in test environment
+if (process.env.NODE_ENV !== 'test') {
+  startServer();
+}

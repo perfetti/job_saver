@@ -128,6 +128,14 @@ backend/
 - `npm start` - Start production server
 - `npm run lint` - Run ESLint
 
+## Testing
+
+- `npm test` - Run all tests
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:coverage` - Run tests with coverage report
+
+Tests are located in `__tests__/` directory and use Jest with Supertest for API testing.
+
 ## Migration from Express/SQLite
 
 If migrating from the old Express/SQLite backend:
