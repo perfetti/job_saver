@@ -27,13 +27,49 @@ export default function JobCard({ job, onStartApplication, onEdit }: JobCardProp
     ? new Date(job.postedDate || job.extractedAt!).toLocaleDateString()
     : ''
 
+  const Actions = () => (
+    <div className={styles.jobLinks}>
+      <a
+        href={job?.sourceUrl || '#'}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.jobLink}
+      >
+        View Original
+      </a>
+      <a
+        href={job?.applicationUrl || '#'}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.jobLink}
+      >
+        Apply
+      </a>
+      {!job.application && (
+        <button
+          className={styles.startApplicationBtn}
+          onClick={() => onStartApplication(job.id)}
+        >
+          Start Application
+        </button>
+      )}
+      <button className={styles.editBtn} onClick={() => onEdit(job.id)}>
+        Edit
+      </button>
+    </div>
+  )
+
   return (
     <div className={styles.jobCard}>
       <div className={styles.jobHeader}>
         <div className={styles.jobTitle}>{job.title || 'Untitled'}</div>
         <div className={styles.jobCompany}>{job.company || 'Unknown Company'}</div>
+        {job.salary_lower_bound && <div className={styles.jobSalaryCurrency}>{`Lower Bound: ${job.salary_currency}${job.salary_lower_bound}`}</div>}
+        {job.salary_upper_bound && <div className={styles.jobSalaryCurrency}>{`Upper Bound: ${job.salary_currency}${job.salary_upper_bound}`}</div>}
         <div className={styles.jobLocation}>{location}</div>
       </div>
+
+      <Actions />
 
       {job.description && (
         <div className={styles.jobDescription}>{job.description}</div>
@@ -91,37 +127,7 @@ export default function JobCard({ job, onStartApplication, onEdit }: JobCardProp
             ` (${new Date(job.application.started_at).toLocaleDateString()})`}
         </Link>
       )}
-
       <div className={styles.jobFooter}>
-        <div className={styles.jobLinks}>
-          <a
-            href={job?.sourceUrl || '#'}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.jobLink}
-          >
-            View Original
-          </a>
-          <a
-            href={job?.applicationUrl || '#'}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.jobLink}
-          >
-            Apply
-          </a>
-          {!job.application && (
-            <button
-              className={styles.startApplicationBtn}
-              onClick={() => onStartApplication(job.id)}
-            >
-              Start Application
-            </button>
-          )}
-          <button className={styles.editBtn} onClick={() => onEdit(job.id)}>
-            Edit
-          </button>
-        </div>
         <div className={styles.jobDate}>{date}</div>
       </div>
     </div>

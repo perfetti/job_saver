@@ -26,6 +26,21 @@ interface JobFormData {
   excluded: boolean
 }
 
+// Storing display components here for easier reuse and to see if we want them elsewhere first.
+const Stat = ({ label, value }: { label: string; value: number }) => (
+  <div className={styles.stat}>
+    <div className={styles.statLabel}>{label}</div>
+    <div className={styles.statValue}>{value}</div>
+  </div>
+)
+
+const ExclusionStat = ({ label, value }: { label: string; value: number }) => (
+  <div className={`${styles.exclusionStat} ${styles.nonExcluded}`}>
+    <div className={styles.statLabel}>{label}</div>
+    <div className={styles.statValue}>{value}</div>
+  </div>
+)
+
 export default function Gallery() {
   const [jobs, setJobs] = useState<Job[]>([])
   const [loading, setLoading] = useState(true)
@@ -283,7 +298,6 @@ export default function Gallery() {
       </div>
     )
   }
-
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -295,28 +309,13 @@ export default function Gallery() {
           </Link>
         </div>
         <div className={styles.stats}>
-          <div className={styles.stat}>
-            <div className={styles.statLabel}>Total Jobs</div>
-            <div className={styles.statValue}>{stats.totalJobs}</div>
-          </div>
-          <div className={styles.stat}>
-            <div className={styles.statLabel}>Companies</div>
-            <div className={styles.statValue}>{stats.totalCompanies}</div>
-          </div>
-          <div className={styles.stat}>
-            <div className={styles.statLabel}>Applications</div>
-            <div className={styles.statValue}>{stats.applicationsCount}</div>
-          </div>
+          <Stat label="Total Jobs" value={stats.totalJobs} />
+          <Stat label="Companies" value={stats.totalCompanies} />
+          <Stat label="Applications" value={stats.applicationsCount} />
         </div>
         <div className={styles.exclusionStats}>
-          <div className={`${styles.exclusionStat} ${styles.nonExcluded}`}>
-            <div className={styles.statLabel}>Non-Excluded</div>
-            <div className={styles.statValue}>{stats.nonExcludedCount}</div>
-          </div>
-          <div className={`${styles.exclusionStat} ${styles.excluded}`}>
-            <div className={styles.statLabel}>Excluded</div>
-            <div className={styles.statValue}>{stats.excludedCount}</div>
-          </div>
+          <ExclusionStat label="Non-Excluded" value={stats.nonExcludedCount} />
+          <ExclusionStat label="Excluded" value={stats.excludedCount} />
         </div>
       </header>
 
