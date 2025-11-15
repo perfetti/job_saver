@@ -54,15 +54,10 @@ export async function PUT(
   try {
     const jobData = await request.json()
 
-    // Validate required fields
+    // Validate required fields - set defaults like Express server
     if (!jobData.title || !jobData.company) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Missing required fields: title and company are required',
-        },
-        { status: 400 }
-      )
+      jobData.title = jobData.title || 'Title Not Found'
+      jobData.company = jobData.company || 'Company Not Found'
     }
 
     const prepared = prepareJobData(jobData)

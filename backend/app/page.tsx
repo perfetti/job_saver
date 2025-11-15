@@ -1,11 +1,9 @@
-// This will be the gallery page - we'll migrate the HTML to React components
-// For now, redirect to the old HTML file or create a new React component
-
+// Serve the gallery page - static HTML file in public directory
+// Next.js automatically serves files from public/ at the root
 import { redirect } from 'next/navigation'
 
 export default function Home() {
-  // Temporarily serve the old HTML file
-  // We'll migrate this to a React component next
+  // Redirect to gallery.html which is served from public/
   redirect('/gallery.html')
 }
 
