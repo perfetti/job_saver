@@ -9,6 +9,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         title: document.title,
         url: window.location.href
       };
+      console.log("Sending page content to background script", content);
 
       sendResponse({ content: content });
     } catch (error) {

@@ -134,10 +134,9 @@ app.post('/api/jobs', (req, res) => {
 
   // Validate required fields
   if (!jobData.title || !jobData.company) {
-    return res.status(400).json({
-      success: false,
-      error: 'Missing required fields: title and company are required'
-    });
+    console.error('Missing required fields: title and company are required');
+    jobData.title = "Title Not Found"
+    jobData.company = "Company Not Found"
   }
 
   // Add ID and timestamp if not present
@@ -241,10 +240,12 @@ app.put('/api/jobs/:id', (req, res) => {
 
   // Validate required fields
   if (!jobData.title || !jobData.company) {
-    return res.status(400).json({
-      success: false,
-      error: 'Missing required fields: title and company are required'
-    });
+    jobData.title = "Title Not Found"
+    jobData.company = "Company Not Found"
+    // return res.status(400).json({
+    //   success: false,
+    //   error: 'Missing required fields: title and company are required'
+    // });
   }
 
   const db = getDb();

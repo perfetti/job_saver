@@ -1,7 +1,8 @@
 // Event handler orchestration - simple event name to handler function mapping
 const eventHandlers = {
   extractJobInfo: handleExtractJobInfo,
-  getAvailableModels: handleGetAvailableModels
+  getAvailableModels: handleGetAvailableModels,
+  extractLinkedInProfile: handleExtractLinkedInProfile
 };
 
 // Listen for messages from popup or content scripts
@@ -76,7 +77,7 @@ async function handleExtractJobInfo(data, sendResponse) {
     }
 
     // Prepare prompt for Ollama - be very explicit about JSON format
-    const pageContent = content.text.substring(0, 15000); // Increased limit for better context
+    const pageContent = content.text; // Increased limit for better context
 
     const prompt = `You are a job information extraction assistant. Extract job information from the following webpage and return it as a valid JSON object.
 
@@ -425,6 +426,79 @@ function showNotification(title, message, type = 'info') {
       }, type === 'error' ? 10000 : 5000);
     }
   });
+}
+
+/**
+ * Handle LinkedIn profile extraction
+ * @param {Object} data - Contains content, url, and model
+ * @param {Function} sendResponse - Callback to send response
+ */
+async function handleExtractLinkedInProfile(data, sendResponse) {
+  try {
+    const { content, url, model } = data;
+
+    if (!content) {
+      sendResponse({
+        success: false,
+        error: 'No content provided'
+      });
+      return;
+    }
+
+    if (!url || !url.includes('linkedin.com/in/')) {
+      sendResponse({
+        success: false,
+        error: 'Invalid LinkedIn profile URL'
+      });
+      return;
+    }
+
+    // Send to backend for processing
+    const backendUrl = 'http://localhost:3000/api/profile/linkedin';
+
+    const response = await fetch(backendUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        linkedin_url: url,
+        page_content: content
+      })
+    });
+
+    if (!response.ok) {
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(`Server returned non-JSON response: ${text.substring(0, 200)}`);
+      }
+      const errorData = await response.json();
+      throw new Error(errorData.error || `Backend API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (result.success) {
+      sendResponse({
+        success: true,
+        profile: result.profile,
+        message: result.message || 'LinkedIn profile extracted and saved successfully'
+      });
+    } else {
+      sendResponse({
+        success: false,
+        error: result.error || 'Failed to extract LinkedIn profile'
+      });
+    }
+
+  } catch (error) {
+    console.error('Error extracting LinkedIn profile:', error);
+    sendResponse({
+      success: false,
+      error: error.message || 'Failed to extract LinkedIn profile'
+    });
+  }
 }
 
 // Log when background script is loaded
