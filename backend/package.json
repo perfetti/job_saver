@@ -13,7 +13,8 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "db:backup": "pg_dump job_saver  > backups/jobs_backup.sql"
   },
   "dependencies": {
     "@prisma/client": "^5.7.0",
