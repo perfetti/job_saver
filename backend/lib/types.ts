@@ -17,6 +17,8 @@ export interface Job {
   savedAt: string
   excluded?: boolean
   tags?: string[]
+  rejectedAt?: string
+  acceptedAt?: string
   application?: Application
 }
 

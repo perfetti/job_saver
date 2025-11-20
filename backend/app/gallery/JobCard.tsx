@@ -8,6 +8,10 @@ interface JobCardProps {
   job: Job
   onStartApplication: (jobId: string) => void
   onEdit: (jobId: string) => void
+  onReject: (jobId: string) => void
+  onAccept: (jobId: string) => void
+  onClearReject: (jobId: string) => void
+  onClearAccept: (jobId: string) => void
 }
 
 // Helper function to format location
@@ -21,11 +25,26 @@ function formatNumber(num: number): string {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
-export default function JobCard({ job, onStartApplication, onEdit }: JobCardProps) {
+export default function JobCard({
+  job,
+  onStartApplication,
+  onEdit,
+  onReject,
+  onAccept,
+  onClearReject,
+  onClearAccept,
+}: JobCardProps) {
   const location = formatLocation(job.location)
   const date = job.postedDate || job.extractedAt
     ? new Date(job.postedDate || job.extractedAt!).toLocaleDateString()
     : ''
+
+  const rejectedDate = job.rejectedAt
+    ? new Date(job.rejectedAt).toLocaleDateString()
+    : null
+  const acceptedDate = job.acceptedAt
+    ? new Date(job.acceptedAt).toLocaleDateString()
+    : null
 
   const Actions = () => (
     <div className={styles.jobLinks}>
@@ -51,6 +70,42 @@ export default function JobCard({ job, onStartApplication, onEdit }: JobCardProp
           onClick={() => onStartApplication(job.id)}
         >
           Start Application
+        </button>
+      )}
+      {!job.rejectedAt && !job.acceptedAt && (
+        <>
+          <button
+            className={styles.rejectBtn}
+            onClick={() => onReject(job.id)}
+            title="Mark as rejected"
+          >
+            Reject
+          </button>
+          <button
+            className={styles.acceptBtn}
+            onClick={() => onAccept(job.id)}
+            title="Mark as accepted"
+          >
+            Accept
+          </button>
+        </>
+      )}
+      {job.rejectedAt && (
+        <button
+          className={styles.clearRejectBtn}
+          onClick={() => onClearReject(job.id)}
+          title="Clear rejected status"
+        >
+          Clear Reject
+        </button>
+      )}
+      {job.acceptedAt && (
+        <button
+          className={styles.clearAcceptBtn}
+          onClick={() => onClearAccept(job.id)}
+          title="Clear accepted status"
+        >
+          Clear Accept
         </button>
       )}
       <button className={styles.editBtn} onClick={() => onEdit(job.id)}>
@@ -127,6 +182,22 @@ export default function JobCard({ job, onStartApplication, onEdit }: JobCardProp
             ` (${new Date(job.application.started_at).toLocaleDateString()})`}
         </Link>
       )}
+
+      {(job.rejectedAt || job.acceptedAt) && (
+        <div className={styles.jobStatusBadges}>
+          {job.rejectedAt && (
+            <div className={styles.rejectedBadge} title={`Rejected on ${rejectedDate}`}>
+              ❌ Rejected ({rejectedDate})
+            </div>
+          )}
+          {job.acceptedAt && (
+            <div className={styles.acceptedBadge} title={`Accepted on ${acceptedDate}`}>
+              ✅ Accepted ({acceptedDate})
+            </div>
+          )}
+        </div>
+      )}
+
       <div className={styles.jobFooter}>
         <div className={styles.jobDate}>{date}</div>
       </div>

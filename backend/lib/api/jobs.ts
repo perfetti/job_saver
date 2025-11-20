@@ -120,3 +120,111 @@ export async function deleteJob(jobId: string): Promise<{ success: boolean; erro
   }
 }
 
+/**
+ * Mark a job as rejected
+ */
+export async function markJobAsRejected(jobId: string): Promise<JobResponse> {
+  try {
+    const response = await fetch(`/api/jobs/${jobId}/reject`, {
+      method: 'POST',
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.error || `HTTP error! status: ${response.status}`,
+      }
+    }
+
+    return data
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || 'Failed to mark job as rejected',
+    }
+  }
+}
+
+/**
+ * Clear rejected status for a job
+ */
+export async function clearRejectedStatus(jobId: string): Promise<JobResponse> {
+  try {
+    const response = await fetch(`/api/jobs/${jobId}/reject`, {
+      method: 'DELETE',
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.error || `HTTP error! status: ${response.status}`,
+      }
+    }
+
+    return data
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || 'Failed to clear rejected status',
+    }
+  }
+}
+
+/**
+ * Mark a job as accepted
+ */
+export async function markJobAsAccepted(jobId: string): Promise<JobResponse> {
+  try {
+    const response = await fetch(`/api/jobs/${jobId}/accept`, {
+      method: 'POST',
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.error || `HTTP error! status: ${response.status}`,
+      }
+    }
+
+    return data
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || 'Failed to mark job as accepted',
+    }
+  }
+}
+
+/**
+ * Clear accepted status for a job
+ */
+export async function clearAcceptedStatus(jobId: string): Promise<JobResponse> {
+  try {
+    const response = await fetch(`/api/jobs/${jobId}/accept`, {
+      method: 'DELETE',
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.error || `HTTP error! status: ${response.status}`,
+      }
+    }
+
+    return data
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || 'Failed to clear accepted status',
+    }
+  }
+}
+

@@ -37,6 +37,8 @@ export function parseJobFromDb(job: any) {
     requirements: job.requirements ? (job.requirements.startsWith('[') ? JSON.parse(job.requirements) : job.requirements) : null,
     tags: job.tags ? JSON.parse(job.tags) : [],
     excluded: job.excluded === true || job.excluded === 1,
+    rejectedAt: job.rejectedAt ? job.rejectedAt.toISOString() : undefined,
+    acceptedAt: job.acceptedAt ? job.acceptedAt.toISOString() : undefined,
   };
 }
 

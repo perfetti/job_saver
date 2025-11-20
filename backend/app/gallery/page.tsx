@@ -4,7 +4,15 @@ import { useState, useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 import styles from './gallery.module.css'
-import { getJobs, updateJob, createApplication } from '@/lib/api'
+import {
+  getJobs,
+  updateJob,
+  createApplication,
+  markJobAsRejected,
+  markJobAsAccepted,
+  clearRejectedStatus,
+  clearAcceptedStatus,
+} from '@/lib/api'
 import type { Job, UpdateJobData } from '@/lib/api'
 import JobCard from './JobCard'
 
@@ -270,6 +278,82 @@ export default function Gallery() {
     }
   }
 
+  // Mark job as rejected
+  const handleReject = async (jobId: string) => {
+    if (!confirm('Mark this job as rejected?')) {
+      return
+    }
+
+    try {
+      const result = await markJobAsRejected(jobId)
+      if (result.success && result.job) {
+        setJobs((prevJobs) =>
+          prevJobs.map((job) => (job.id === jobId ? result.job! : job))
+        )
+      } else {
+        alert('Error marking job as rejected: ' + (result.error || 'Unknown error'))
+      }
+    } catch (err: any) {
+      alert('Error marking job as rejected: ' + err.message)
+      console.error('Reject error:', err)
+    }
+  }
+
+  // Mark job as accepted
+  const handleAccept = async (jobId: string) => {
+    if (!confirm('Mark this job as accepted?')) {
+      return
+    }
+
+    try {
+      const result = await markJobAsAccepted(jobId)
+      if (result.success && result.job) {
+        setJobs((prevJobs) =>
+          prevJobs.map((job) => (job.id === jobId ? result.job! : job))
+        )
+      } else {
+        alert('Error marking job as accepted: ' + (result.error || 'Unknown error'))
+      }
+    } catch (err: any) {
+      alert('Error marking job as accepted: ' + err.message)
+      console.error('Accept error:', err)
+    }
+  }
+
+  // Clear rejected status
+  const handleClearReject = async (jobId: string) => {
+    try {
+      const result = await clearRejectedStatus(jobId)
+      if (result.success && result.job) {
+        setJobs((prevJobs) =>
+          prevJobs.map((job) => (job.id === jobId ? result.job! : job))
+        )
+      } else {
+        alert('Error clearing rejected status: ' + (result.error || 'Unknown error'))
+      }
+    } catch (err: any) {
+      alert('Error clearing rejected status: ' + err.message)
+      console.error('Clear reject error:', err)
+    }
+  }
+
+  // Clear accepted status
+  const handleClearAccept = async (jobId: string) => {
+    try {
+      const result = await clearAcceptedStatus(jobId)
+      if (result.success && result.job) {
+        setJobs((prevJobs) =>
+          prevJobs.map((job) => (job.id === jobId ? result.job! : job))
+        )
+      } else {
+        alert('Error clearing accepted status: ' + (result.error || 'Unknown error'))
+      }
+    } catch (err: any) {
+      alert('Error clearing accepted status: ' + err.message)
+      console.error('Clear accept error:', err)
+    }
+  }
+
   // Group jobs by company for hierarchy view
   const jobsByCompany = useMemo(() => {
     const grouped: Record<string, Job[]> = {}
@@ -390,6 +474,10 @@ export default function Gallery() {
                   job={job}
                   onStartApplication={startApplication}
                   onEdit={openEditModal}
+                  onReject={handleReject}
+                  onAccept={handleAccept}
+                  onClearReject={handleClearReject}
+                  onClearAccept={handleClearAccept}
                 />
               ))}
             </div>
@@ -426,6 +514,10 @@ export default function Gallery() {
                             job={job}
                             onStartApplication={startApplication}
                             onEdit={openEditModal}
+                            onReject={handleReject}
+                            onAccept={handleAccept}
+                            onClearReject={handleClearReject}
+                            onClearAccept={handleClearAccept}
                           />
                         ))}
                       </div>

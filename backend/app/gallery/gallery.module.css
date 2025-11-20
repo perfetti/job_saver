@@ -297,6 +297,33 @@
   color: #155724;
 }
 
+.jobStatusBadges {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.rejectedBadge {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.acceptedBadge {
+  background: #d4edda;
+  color: #155724;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+}
+
 .jobFooter {
   margin-top: 15px;
   padding-top: 15px;
@@ -333,7 +360,11 @@
 }
 
 .startApplicationBtn,
-.editBtn {
+.editBtn,
+.rejectBtn,
+.acceptBtn,
+.clearRejectBtn,
+.clearAcceptBtn {
   padding: 5px 10px;
   border: 1px solid #667eea;
   border-radius: 3px;
@@ -348,6 +379,38 @@
 .editBtn:hover {
   background: #667eea;
   color: white;
+}
+
+.rejectBtn {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.rejectBtn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.acceptBtn {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.acceptBtn:hover {
+  background: #28a745;
+  color: white;
+}
+
+.clearRejectBtn,
+.clearAcceptBtn {
+  border-color: #ffc107;
+  color: #856404;
+}
+
+.clearRejectBtn:hover,
+.clearAcceptBtn:hover {
+  background: #ffc107;
+  color: #333;
 }
 
 .jobDate {
