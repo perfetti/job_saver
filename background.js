@@ -2,7 +2,8 @@
 const eventHandlers = {
   extractJobInfo: handleExtractJobInfo,
   getAvailableModels: handleGetAvailableModels,
-  extractLinkedInProfile: handleExtractLinkedInProfile
+  extractLinkedInProfile: handleExtractLinkedInProfile,
+  extractEmail: handleExtractEmail
 };
 
 // Listen for messages from popup or content scripts
@@ -381,6 +382,78 @@ async function handleExtractLinkedInProfile(data, sendResponse) {
     sendResponse({
       success: false,
       error: error.message || 'Failed to extract LinkedIn profile'
+    });
+  }
+}
+
+/**
+ * Handle email extraction from Gmail
+ * @param {Object} data - Email content and metadata
+ * @param {Function} sendResponse - Callback to send response
+ */
+async function handleExtractEmail(data, sendResponse) {
+  try {
+    const { emailContent, url, model } = data;
+
+    if (!emailContent) {
+      throw new Error('Email content is required');
+    }
+
+    showNotification('Extracting email...', 'Processing email content', 'info');
+
+    const backendUrl = 'http://localhost:3000/api/extract/email';
+
+    // Prepare email content string for parsing
+    const emailContentString = JSON.stringify({
+      subject: emailContent.subject || '',
+      from: emailContent.from || '',
+      to: emailContent.to || '',
+      body: emailContent.body || emailContent.bodyText || '',
+      bodyText: emailContent.bodyText || '',
+      date: emailContent.date || ''
+    });
+
+    const response = await fetch(backendUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        emailContent: emailContentString,
+        model: model || 'llama3.1:latest'
+      })
+    });
+
+    if (!response.ok) {
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(`Server returned non-JSON response: ${text.substring(0, 200)}`);
+      }
+      const errorData = await response.json();
+      throw new Error(errorData.error || `Backend API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (result.success) {
+      showNotification('Email extracted!', 'You can assign it to a job in the gallery', 'success');
+      sendResponse({
+        success: true,
+        communicationId: result.communication?.id,
+        communication: result.communication,
+        message: 'Email extracted successfully'
+      });
+    } else {
+      throw new Error(result.error || 'Failed to extract email');
+    }
+
+  } catch (error) {
+    console.error('Error extracting email:', error);
+    showNotification('Error', error.message || 'Failed to extract email', 'error');
+    sendResponse({
+      success: false,
+      error: error.message || 'Failed to extract email'
     });
   }
 }

@@ -15,6 +15,7 @@ import {
 } from '@/lib/api'
 import type { Job, UpdateJobData } from '@/lib/api'
 import JobCard from './JobCard'
+import CommunicationAssignModal from './CommunicationAssignModal'
 
 type ViewMode = 'list' | 'hierarchy'
 
@@ -59,6 +60,7 @@ export default function Gallery() {
   const [viewMode, setViewMode] = useState<ViewMode>('list')
   const [editingJob, setEditingJob] = useState<Job | null>(null)
   const [showEditModal, setShowEditModal] = useState(false)
+  const [showCommModal, setShowCommModal] = useState(false)
 
   // React Hook Form setup
   const {
@@ -387,10 +389,17 @@ export default function Gallery() {
       <header className={styles.header}>
         <h1>Job Gallery</h1>
         <p>All your saved job postings</p>
-        <div style={{ marginTop: '15px' }}>
+        <div style={{ marginTop: '15px', display: 'flex', gap: '10px' }}>
           <Link href="/applications" className={styles.applicationsLink}>
             View All Applications →
           </Link>
+          <button
+            className={styles.btnPrimary}
+            onClick={() => setShowCommModal(true)}
+            style={{ padding: '8px 16px', fontSize: '14px' }}
+          >
+            Assign Communications
+          </button>
         </div>
         <div className={styles.stats}>
           <Stat label="Total Jobs" value={stats.totalJobs} />
@@ -693,6 +702,15 @@ export default function Gallery() {
           </div>
         </div>
       )}
+
+      {/* Communication Assign Modal */}
+      <CommunicationAssignModal
+        isOpen={showCommModal}
+        onClose={() => setShowCommModal(false)}
+        onAssign={() => {
+          loadJobs() // Reload jobs to show updated communications
+        }}
+      />
     </div>
   )
 }

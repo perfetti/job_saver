@@ -234,3 +234,45 @@ Extract all available information from this LinkedIn profile page and return ONL
   return generateJSONResponse(model, prompt)
 }
 
+/**
+ * Extract email information from email content
+ */
+export async function extractEmailInfo(
+  emailContent: string,
+  model: string = 'llama3.1:latest'
+): Promise<{
+  subject?: string
+  from?: string
+  to?: string
+  body?: string
+  body_text?: string
+  received_at?: string
+}> {
+  const contentText = emailContent.substring(0, 20000)
+
+  const prompt = `You are an email parsing assistant. Extract structured information from the following email content and return it as a valid JSON object.
+IMPORTANT: You must respond with ONLY valid JSON. No markdown, no code blocks, no explanations, just the raw JSON object.
+Required JSON structure:
+{
+  "subject": "Email subject line",
+  "from": "Sender email address or name",
+  "to": "Recipient email address or name",
+  "body": "Full email body content (HTML if available, otherwise plain text)",
+  "body_text": "Plain text version of email body (if HTML was provided, extract text)",
+  "received_at": "Date/time email was received in ISO 8601 format (YYYY-MM-DDTHH:mm:ssZ) or null if not available"
+}
+Email Content:
+${contentText}
+Now extract the email information and return ONLY the JSON object:`
+
+  const emailInfo = await generateJSONResponse(model, prompt)
+  return emailInfo as {
+    subject?: string
+    from?: string
+    to?: string
+    body?: string
+    body_text?: string
+    received_at?: string
+  }
+}
+

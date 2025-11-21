@@ -8,6 +8,11 @@ export async function GET() {
     const jobs = await prisma.job.findMany({
       include: {
         applications: true,
+        communications: {
+          orderBy: {
+            receivedAt: 'desc',
+          },
+        },
       },
       orderBy: {
         savedAt: 'desc',
@@ -27,6 +32,20 @@ export async function GET() {
           created_at: job.applications[0].createdAt.toISOString(),
           updated_at: job.applications[0].updatedAt.toISOString(),
         }
+      }
+      if (job.communications && job.communications.length > 0) {
+        parsed.communications = job.communications.map((comm) => ({
+          id: comm.id,
+          job_id: comm.jobId || undefined,
+          subject: comm.subject || undefined,
+          from: comm.from || undefined,
+          to: comm.to || undefined,
+          body: comm.body,
+          body_text: comm.bodyText || undefined,
+          received_at: comm.receivedAt?.toISOString(),
+          created_at: comm.createdAt.toISOString(),
+          updated_at: comm.updatedAt.toISOString(),
+        }))
       }
       return parsed
     })

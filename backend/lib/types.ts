@@ -20,6 +20,7 @@ export interface Job {
   rejectedAt?: string
   acceptedAt?: string
   application?: Application
+  communications?: Communication[]
 }
 
 export interface Application {
@@ -29,6 +30,19 @@ export interface Application {
   started_at: string
   submitted_at?: string
   notes?: string
+  created_at?: string
+  updated_at?: string
+}
+
+export interface Communication {
+  id: string
+  job_id?: string
+  subject?: string
+  from?: string
+  to?: string
+  body: string
+  body_text?: string
+  received_at?: string
   created_at?: string
   updated_at?: string
 }

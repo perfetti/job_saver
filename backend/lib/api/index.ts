@@ -5,7 +5,8 @@
 
 export * from './jobs'
 export * from './applications'
+export * from './communications'
 
 // Re-export types for convenience
-export type { Job, Application } from '@/lib/types'
+export type { Job, Application, Communication } from '@/lib/types'
 

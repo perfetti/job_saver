@@ -198,6 +198,36 @@ export default function JobCard({
         </div>
       )}
 
+      {job.communications && job.communications.length > 0 && (
+        <div className={styles.communicationsSection}>
+          <div className={styles.communicationsTitle}>
+            Communications ({job.communications.length})
+          </div>
+          <div className={styles.communicationsList}>
+            {job.communications.slice(0, 3).map((comm) => (
+              <div key={comm.id} className={styles.communicationItem}>
+                <div className={styles.commSubject}>
+                  {comm.subject || 'No subject'}
+                </div>
+                <div className={styles.commMeta}>
+                  {comm.from && <span>From: {comm.from}</span>}
+                  {comm.received_at && (
+                    <span>
+                      {new Date(comm.received_at).toLocaleDateString()}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+            {job.communications.length > 3 && (
+              <div className={styles.commMore}>
+                +{job.communications.length - 3} more
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className={styles.jobFooter}>
         <div className={styles.jobDate}>{date}</div>
       </div>
