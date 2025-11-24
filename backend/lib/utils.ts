@@ -30,15 +30,74 @@ export function prepareJobData(jobData: any) {
   };
 }
 
+/**
+ * Parse a job from the database, including all relations
+ * This is the single source of truth for job data transformation
+ */
 export function parseJobFromDb(job: any) {
-  return {
-    ...job,
-    location: job.location ? (job.location.startsWith('[') ? JSON.parse(job.location) : job.location) : null,
-    requirements: job.requirements ? (job.requirements.startsWith('[') ? JSON.parse(job.requirements) : job.requirements) : null,
-    tags: job.tags ? JSON.parse(job.tags) : [],
+  // Parse basic job fields
+  const parsed = {
+    id: job.id,
+    title: job.title,
+    company: job.company,
+    location: job.location
+      ? job.location.startsWith('[')
+        ? JSON.parse(job.location)
+        : job.location
+      : null,
+    description: job.description || undefined,
+    salary_lower_bound: job.salaryLowerBound || undefined,
+    salary_upper_bound: job.salaryUpperBound || undefined,
+    salary_currency: job.salaryCurrency || undefined,
+    requirements: job.requirements
+      ? job.requirements.startsWith('[')
+        ? JSON.parse(job.requirements)
+        : job.requirements
+      : null,
+    applicationUrl: job.applicationUrl || undefined,
+    sourceUrl: job.sourceUrl || undefined,
+    postedDate: job.postedDate || undefined,
+    extractedAt: job.extractedAt ? job.extractedAt.toISOString() : undefined,
+    savedAt: job.savedAt ? job.savedAt.toISOString() : undefined,
     excluded: job.excluded === true || job.excluded === 1,
+    tags: job.tags ? JSON.parse(job.tags) : [],
     rejectedAt: job.rejectedAt ? job.rejectedAt.toISOString() : undefined,
     acceptedAt: job.acceptedAt ? job.acceptedAt.toISOString() : undefined,
-  };
+    createdAt: job.createdAt ? job.createdAt.toISOString() : undefined,
+    updatedAt: job.updatedAt ? job.updatedAt.toISOString() : undefined,
+  }
+
+  // Parse application if present
+  if (job.applications && Array.isArray(job.applications) && job.applications.length > 0) {
+    const app = job.applications[0]
+    parsed.application = {
+      id: app.id,
+      job_id: app.jobId,
+      status: app.status,
+      started_at: app.startedAt.toISOString(),
+      submitted_at: app.submittedAt ? app.submittedAt.toISOString() : undefined,
+      notes: app.notes || undefined,
+      created_at: app.createdAt.toISOString(),
+      updated_at: app.updatedAt.toISOString(),
+    }
+  }
+
+  // Parse communications if present
+  if (job.communications && Array.isArray(job.communications)) {
+    parsed.communications = job.communications.map((comm: any) => ({
+      id: comm.id,
+      job_id: comm.jobId || undefined,
+      subject: comm.subject || undefined,
+      from: comm.from || undefined,
+      to: comm.to || undefined,
+      body: comm.body,
+      body_text: comm.bodyText || undefined,
+      received_at: comm.receivedAt ? comm.receivedAt.toISOString() : undefined,
+      created_at: comm.createdAt.toISOString(),
+      updated_at: comm.updatedAt.toISOString(),
+    }))
+  }
+
+  return parsed
 }
 

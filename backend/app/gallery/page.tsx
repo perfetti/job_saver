@@ -114,10 +114,29 @@ export default function Gallery() {
     const nonExcludedCount = jobs.length - excludedCount
     const applicationsCount = jobs.filter((job) => job.application).length
 
+    // Calculate application status counts
+    // In Progress: applications with status 'started' or 'submitted'
+    const applicationsInProgress = jobs.filter(
+      (job) =>
+        job.application &&
+        (job.application.status === 'started' || job.application.status === 'submitted')
+    ).length
+    // Accepted: jobs with acceptedAt set (job-level acceptance)
+    const applicationsAccepted = jobs.filter(
+      (job) => job.acceptedAt !== null && job.acceptedAt !== undefined
+    ).length
+    // Rejected: jobs with rejectedAt set (job-level rejection)
+    const applicationsRejected = jobs.filter(
+      (job) => job.rejectedAt !== null && job.rejectedAt !== undefined
+    ).length
+
     return {
       totalJobs: jobs.length,
       totalCompanies: companies.size,
       applicationsCount,
+      applicationsInProgress,
+      applicationsAccepted,
+      applicationsRejected,
       excludedCount,
       nonExcludedCount,
     }
@@ -405,6 +424,20 @@ export default function Gallery() {
           <Stat label="Total Jobs" value={stats.totalJobs} />
           <Stat label="Companies" value={stats.totalCompanies} />
           <Stat label="Applications" value={stats.applicationsCount} />
+        </div>
+        <div className={styles.applicationStats}>
+          <div className={`${styles.applicationStat} ${styles.inProgress}`}>
+            <div className={styles.statLabel}>In Progress</div>
+            <div className={styles.statValue}>{stats.applicationsInProgress}</div>
+          </div>
+          <div className={`${styles.applicationStat} ${styles.accepted}`}>
+            <div className={styles.statLabel}>Accepted</div>
+            <div className={styles.statValue}>{stats.applicationsAccepted}</div>
+          </div>
+          <div className={`${styles.applicationStat} ${styles.rejected}`}>
+            <div className={styles.statLabel}>Rejected</div>
+            <div className={styles.statValue}>{stats.applicationsRejected}</div>
+          </div>
         </div>
         <div className={styles.exclusionStats}>
           <ExclusionStat label="Non-Excluded" value={stats.nonExcludedCount} />

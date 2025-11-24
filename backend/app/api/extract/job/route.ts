@@ -133,6 +133,14 @@ export async function POST(request: NextRequest) {
             excluded: prepared.excluded,
             tags: prepared.tags,
           },
+          include: {
+            applications: true,
+            communications: {
+              orderBy: {
+                receivedAt: 'desc',
+              },
+            },
+          },
         })
         updated = true
       } else {
@@ -157,6 +165,14 @@ export async function POST(request: NextRequest) {
             savedAt: new Date(),
             excluded: prepared.excluded,
             tags: prepared.tags,
+          },
+          include: {
+            applications: true,
+            communications: {
+              orderBy: {
+                receivedAt: 'desc',
+              },
+            },
           },
         })
       }

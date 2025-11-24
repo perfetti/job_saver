@@ -19,36 +19,7 @@ export async function GET() {
       },
     })
 
-    const formattedJobs = jobs.map((job) => {
-      const parsed = parseJobFromDb(job)
-      if (job.applications && job.applications.length > 0) {
-        parsed.application = {
-          id: job.applications[0].id,
-          job_id: job.applications[0].jobId,
-          status: job.applications[0].status as any,
-          started_at: job.applications[0].startedAt.toISOString(),
-          submitted_at: job.applications[0].submittedAt?.toISOString(),
-          notes: job.applications[0].notes || undefined,
-          created_at: job.applications[0].createdAt.toISOString(),
-          updated_at: job.applications[0].updatedAt.toISOString(),
-        }
-      }
-      if (job.communications && job.communications.length > 0) {
-        parsed.communications = job.communications.map((comm) => ({
-          id: comm.id,
-          job_id: comm.jobId || undefined,
-          subject: comm.subject || undefined,
-          from: comm.from || undefined,
-          to: comm.to || undefined,
-          body: comm.body,
-          body_text: comm.bodyText || undefined,
-          received_at: comm.receivedAt?.toISOString(),
-          created_at: comm.createdAt.toISOString(),
-          updated_at: comm.updatedAt.toISOString(),
-        }))
-      }
-      return parsed
-    })
+    const formattedJobs = jobs.map((job) => parseJobFromDb(job))
 
     return NextResponse.json({
       success: true,
@@ -121,6 +92,14 @@ export async function POST(request: NextRequest) {
           excluded: jobData.excluded === true,
           tags: prepared.tags,
         },
+        include: {
+          applications: true,
+          communications: {
+            orderBy: {
+              receivedAt: 'desc',
+            },
+          },
+        },
       })
 
       return NextResponse.json({
@@ -149,6 +128,14 @@ export async function POST(request: NextRequest) {
           savedAt: jobData.savedAt ? new Date(jobData.savedAt) : new Date(),
           excluded: jobData.excluded === true,
           tags: prepared.tags,
+        },
+        include: {
+          applications: true,
+          communications: {
+            orderBy: {
+              receivedAt: 'desc',
+            },
+          },
         },
       })
 

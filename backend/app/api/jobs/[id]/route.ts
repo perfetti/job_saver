@@ -12,6 +12,11 @@ export async function GET(
       where: { id: params.id },
       include: {
         applications: true,
+        communications: {
+          orderBy: {
+            receivedAt: 'desc',
+          },
+        },
       },
     })
 
@@ -23,18 +28,6 @@ export async function GET(
     }
 
     const parsed = parseJobFromDb(job)
-    if (job.applications && job.applications.length > 0) {
-      parsed.application = {
-        id: job.applications[0].id,
-        job_id: job.applications[0].jobId,
-        status: job.applications[0].status as any,
-        started_at: job.applications[0].startedAt.toISOString(),
-        submitted_at: job.applications[0].submittedAt?.toISOString(),
-        notes: job.applications[0].notes || undefined,
-        created_at: job.applications[0].createdAt.toISOString(),
-        updated_at: job.applications[0].updatedAt.toISOString(),
-      }
-    }
 
     return NextResponse.json({ success: true, job: parsed })
   } catch (error: any) {
@@ -79,6 +72,14 @@ export async function PUT(
         extractedAt: new Date(),
         excluded: jobData.excluded === true,
         tags: prepared.tags,
+      },
+      include: {
+        applications: true,
+        communications: {
+          orderBy: {
+            receivedAt: 'desc',
+          },
+        },
       },
     })
 

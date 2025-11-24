@@ -14,6 +14,14 @@ export async function POST(
         acceptedAt: new Date(),
         rejectedAt: null, // Clear rejectedAt if it was set
       },
+      include: {
+        applications: true,
+        communications: {
+          orderBy: {
+            receivedAt: 'desc',
+          },
+        },
+      },
     })
 
     return NextResponse.json({
@@ -46,6 +54,14 @@ export async function DELETE(
       where: { id: params.id },
       data: {
         acceptedAt: null,
+      },
+      include: {
+        applications: true,
+        communications: {
+          orderBy: {
+            receivedAt: 'desc',
+          },
+        },
       },
     })
 

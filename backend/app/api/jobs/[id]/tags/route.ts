@@ -15,6 +15,14 @@ export async function PUT(
       data: {
         tags: JSON.stringify(tags || []),
       },
+      include: {
+        applications: true,
+        communications: {
+          orderBy: {
+            receivedAt: 'desc',
+          },
+        },
+      },
     })
 
     return NextResponse.json({
