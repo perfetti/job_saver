@@ -9,5 +9,5 @@ export * from './communications'
 
 // Re-export types for convenience
 export type { Job, Application, Communication } from '@/lib/types'
-export type { UpdateJobData } from './jobs'
+export type { UpdateJobData, JobResponse } from './jobs'
 

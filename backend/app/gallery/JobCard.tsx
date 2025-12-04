@@ -117,7 +117,9 @@ export default function JobCard({
   return (
     <div className={styles.jobCard}>
       <div className={styles.jobHeader}>
-        <div className={styles.jobTitle}>{job.title || 'Untitled'}</div>
+        <Link href={`/jobs/${job.id}`} className={styles.jobTitleLink}>
+          <div className={styles.jobTitle}>{job.title || 'Untitled'}</div>
+        </Link>
         <div className={styles.jobCompany}>{job.company || 'Unknown Company'}</div>
         {job.salary_lower_bound && <div className={styles.jobSalaryCurrency}>{`Lower Bound: ${job.salary_currency}${job.salary_lower_bound}`}</div>}
         {job.salary_upper_bound && <div className={styles.jobSalaryCurrency}>{`Upper Bound: ${job.salary_currency}${job.salary_upper_bound}`}</div>}

@@ -91,6 +91,30 @@ export async function createJob(jobData: UpdateJobData): Promise<JobResponse> {
 }
 
 /**
+ * Get a single job by ID
+ */
+export async function getJobById(jobId: string): Promise<JobResponse> {
+  try {
+    const response = await fetch(`/api/jobs/${jobId}`)
+    const data = await response.json()
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.error || `HTTP error! status: ${response.status}`,
+      }
+    }
+
+    return data
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || 'Failed to fetch job',
+    }
+  }
+}
+
+/**
  * Update a job by ID
  */
 export async function updateJob(

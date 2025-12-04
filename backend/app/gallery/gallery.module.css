@@ -229,6 +229,17 @@
   margin-bottom: 5px;
 }
 
+.jobTitleLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: color 0.2s;
+}
+
+.jobTitleLink:hover .jobTitle {
+  color: #667eea;
+}
+
 .jobCompany {
   font-size: 16px;
   color: #667eea;
