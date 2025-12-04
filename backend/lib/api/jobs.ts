@@ -60,6 +60,37 @@ export async function getJobs(): Promise<JobsResponse> {
 }
 
 /**
+ * Create a new job
+ */
+export async function createJob(jobData: UpdateJobData): Promise<JobResponse> {
+  try {
+    const response = await fetch('/api/jobs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(jobData),
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.error || `HTTP error! status: ${response.status}`,
+      }
+    }
+
+    return data
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || 'Failed to create job',
+    }
+  }
+}
+
+/**
  * Update a job by ID
  */
 export async function updateJob(

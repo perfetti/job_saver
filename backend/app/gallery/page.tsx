@@ -7,6 +7,7 @@ import styles from './gallery.module.css'
 import {
   getJobs,
   updateJob,
+  createJob,
   createApplication,
   markJobAsRejected,
   markJobAsAccepted,
@@ -16,6 +17,7 @@ import {
 import type { Job, UpdateJobData } from '@/lib/api'
 import JobCard from './JobCard'
 import CommunicationAssignModal from './CommunicationAssignModal'
+import JobFormModal from './JobFormModal'
 
 type ViewMode = 'list' | 'hierarchy'
 
@@ -61,6 +63,7 @@ export default function Gallery() {
   const [editingJob, setEditingJob] = useState<Job | null>(null)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showCommModal, setShowCommModal] = useState(false)
+  const [showCreateModal, setShowCreateModal] = useState(false)
 
   // React Hook Form setup
   const {
@@ -494,6 +497,13 @@ export default function Gallery() {
         <button className={styles.refreshBtn} onClick={loadJobs}>
           Refresh
         </button>
+        <button
+          className={styles.addJobBtnMobile}
+          onClick={() => setShowCreateModal(true)}
+          title="Add New Job"
+        >
+          +
+        </button>
       </div>
 
       <div className={styles.jobsContainer}>
@@ -744,6 +754,24 @@ export default function Gallery() {
           loadJobs() // Reload jobs to show updated communications
         }}
       />
+
+      {/* Create Job Modal */}
+      <JobFormModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSuccess={() => {
+          loadJobs() // Reload jobs to show the new job
+        }}
+      />
+
+      {/* Add Job Button - Desktop (Fixed Bottom Right) */}
+      <button
+        className={styles.addJobBtnDesktop}
+        onClick={() => setShowCreateModal(true)}
+        title="Add New Job"
+      >
+        <span className={styles.plusIcon}>+</span>
+      </button>
     </div>
   )
 }
