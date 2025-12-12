@@ -98,6 +98,23 @@ export function parseJobFromDb(job: any) {
     }))
   }
 
+  // Parse interview rounds if present
+  if (job.interviewRounds && Array.isArray(job.interviewRounds)) {
+    parsed.interviewRounds = job.interviewRounds.map((round: any) => ({
+      id: round.id,
+      job_id: round.jobId,
+      round_number: round.roundNumber,
+      interviewer_name: round.interviewerName || undefined,
+      interviewer_email: round.interviewerEmail || undefined,
+      notes: round.notes || undefined,
+      recording_url: round.recordingUrl || undefined,
+      scheduled_at: round.scheduledAt ? round.scheduledAt.toISOString() : undefined,
+      completed_at: round.completedAt ? round.completedAt.toISOString() : undefined,
+      created_at: round.createdAt.toISOString(),
+      updated_at: round.updatedAt.toISOString(),
+    }))
+  }
+
   return parsed
 }
 

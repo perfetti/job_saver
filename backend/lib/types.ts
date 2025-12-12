@@ -21,6 +21,7 @@ export interface Job {
   acceptedAt?: string
   application?: Application
   communications?: Communication[]
+  interviewRounds?: InterviewRound[]
 }
 
 export interface Application {
@@ -43,6 +44,20 @@ export interface Communication {
   body: string
   body_text?: string
   received_at?: string
+  created_at?: string
+  updated_at?: string
+}
+
+export interface InterviewRound {
+  id: string
+  job_id: string
+  round_number: number
+  interviewer_name?: string
+  interviewer_email?: string
+  notes?: string
+  recording_url?: string
+  scheduled_at?: string
+  completed_at?: string
   created_at?: string
   updated_at?: string
 }

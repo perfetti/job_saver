@@ -376,6 +376,226 @@
   text-decoration: underline;
 }
 
+/* Interviews Tab */
+.interviewsTab {
+  width: 100%;
+}
+
+.tabHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.interviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.interviewCard {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  transition: box-shadow 0.2s;
+}
+
+.interviewCard:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.interviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  gap: 15px;
+}
+
+.interviewTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.interviewerInfo {
+  font-size: 14px;
+  color: #666;
+}
+
+.interviewActions {
+  display: flex;
+  gap: 10px;
+}
+
+.interviewMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+  color: #666;
+}
+
+.interviewMetaItem strong {
+  color: #333;
+  margin-right: 5px;
+}
+
+.interviewNotes {
+  margin-top: 15px;
+  padding: 15px;
+  background: white;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+}
+
+.notesContent {
+  line-height: 1.6;
+  color: #444;
+}
+
+.notesContent :global(p) {
+  margin: 0 0 10px 0;
+}
+
+.notesContent :global(p:last-child) {
+  margin-bottom: 0;
+}
+
+.interviewRecording {
+  margin-top: 15px;
+}
+
+.recordingLink {
+  display: inline-block;
+  color: #667eea;
+  text-decoration: none;
+  padding: 8px 15px;
+  border: 2px solid #667eea;
+  border-radius: 5px;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.recordingLink:hover {
+  background: #667eea;
+  color: white;
+}
+
+.interviewFormContainer {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.interviewForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.formGroup input[type='text'],
+.formGroup input[type='email'],
+.formGroup input[type='number'],
+.formGroup input[type='datetime-local'] {
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.quillWrapper {
+  background: white;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+}
+
+.quillWrapper :global(.ql-container) {
+  min-height: 200px;
+  font-size: 14px;
+}
+
+.quillWrapper :global(.ql-editor) {
+  min-height: 200px;
+}
+
+.fileInput {
+  padding: 8px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.fileInfo {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+.existingRecording {
+  margin-top: 8px;
+}
+
+.formActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.btnDanger {
+  padding: 8px 16px;
+  background: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btnDanger:hover {
+  background: #c62828;
+}
+
+.errorText {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .dashboard {

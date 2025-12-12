@@ -34,6 +34,7 @@ model Job {
 
   applications      Application[]
   communications    Communication[]
+  interviewRounds   InterviewRound[]
 
   @@map("jobs")
 }
@@ -70,6 +71,25 @@ model Communication {
 
   @@index([jobId])
   @@map("communications")
+}
+
+model InterviewRound {
+  id          String   @id @default(uuid())
+  jobId       String   @map("job_id")
+  roundNumber Int      @map("round_number")
+  interviewerName String? @map("interviewer_name")
+  interviewerEmail String? @map("interviewer_email")
+  notes       String?  // HTML content from WYSIWYG editor
+  recordingUrl String? @map("recording_url") // Path to uploaded recording file
+  scheduledAt DateTime? @map("scheduled_at")
+  completedAt DateTime? @map("completed_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  job         Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+  @@map("interview_rounds")
 }
 
 model UserProfile {

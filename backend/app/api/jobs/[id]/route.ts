@@ -17,6 +17,12 @@ export async function GET(
             receivedAt: 'desc',
           },
         },
+        interviewRounds: {
+          orderBy: [
+            { roundNumber: 'asc' },
+            { scheduledAt: 'desc' },
+          ],
+        },
       },
     })
 
@@ -79,6 +85,12 @@ export async function PUT(
           orderBy: {
             receivedAt: 'desc',
           },
+        },
+        interviewRounds: {
+          orderBy: [
+            { roundNumber: 'asc' },
+            { scheduledAt: 'desc' },
+          ],
         },
       },
     })

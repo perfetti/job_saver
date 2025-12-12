@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { getJobById } from '@/lib/api'
-import type { Job } from '@/lib/api'
+import { getJobById, getInterviewRounds, deleteInterviewRound } from '@/lib/api'
+import type { Job, InterviewRound } from '@/lib/api'
 import styles from './job.module.css'
+import InterviewRoundForm from './InterviewRoundForm'
 
-type Tab = 'details' | 'communications'
+type Tab = 'details' | 'communications' | 'interviews'
 
 export default function JobShowPage() {
   const params = useParams()
@@ -18,12 +19,21 @@ export default function JobShowPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<Tab>('details')
+  const [interviews, setInterviews] = useState<InterviewRound[]>([])
+  const [editingInterview, setEditingInterview] = useState<InterviewRound | null>(null)
+  const [showInterviewForm, setShowInterviewForm] = useState(false)
 
   useEffect(() => {
     if (jobId) {
       loadJob()
     }
   }, [jobId])
+
+  useEffect(() => {
+    if (activeTab === 'interviews' && jobId) {
+      loadInterviews()
+    }
+  }, [activeTab, jobId])
 
   async function loadJob() {
     setLoading(true)
@@ -32,6 +42,9 @@ export default function JobShowPage() {
       const result = await getJobById(jobId)
       if (result.success && result.job) {
         setJob(result.job)
+        if (result.job.interviewRounds) {
+          setInterviews(result.job.interviewRounds)
+        }
       } else {
         setError(result.error || 'Failed to load job')
       }
@@ -40,6 +53,52 @@ export default function JobShowPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  async function loadInterviews() {
+    try {
+      const result = await getInterviewRounds(jobId)
+      if (result.success && result.interviews) {
+        setInterviews(result.interviews)
+      }
+    } catch (err: any) {
+      console.error('Error loading interviews:', err)
+    }
+  }
+
+  async function handleDeleteInterview(interviewId: string) {
+    if (!confirm('Are you sure you want to delete this interview round?')) {
+      return
+    }
+
+    try {
+      const result = await deleteInterviewRound(interviewId)
+      if (result.success) {
+        await loadInterviews()
+        await loadJob() // Reload job to update counts
+      } else {
+        alert('Error deleting interview: ' + (result.error || 'Unknown error'))
+      }
+    } catch (err: any) {
+      alert('Error deleting interview: ' + err.message)
+    }
+  }
+
+  function handleEditInterview(interview: InterviewRound) {
+    setEditingInterview(interview)
+    setShowInterviewForm(true)
+  }
+
+  function handleNewInterview() {
+    setEditingInterview(null)
+    setShowInterviewForm(true)
+  }
+
+  async function handleInterviewFormSuccess() {
+    setShowInterviewForm(false)
+    setEditingInterview(null)
+    await loadInterviews()
+    await loadJob()
   }
 
   if (loading) {
@@ -100,6 +159,15 @@ export default function JobShowPage() {
             Communications
             {job.communications && job.communications.length > 0 && (
               <span className={styles.tabBadge}>{job.communications.length}</span>
+            )}
+          </button>
+          <button
+            className={`${styles.tab} ${activeTab === 'interviews' ? styles.tabActive : ''}`}
+            onClick={() => setActiveTab('interviews')}
+          >
+            Interviews
+            {interviews.length > 0 && (
+              <span className={styles.tabBadge}>{interviews.length}</span>
             )}
           </button>
         </div>
@@ -295,6 +363,124 @@ export default function JobShowPage() {
                     </div>
                   ))}
                 </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'interviews' && (
+            <div className={styles.interviewsTab}>
+              <div className={styles.tabHeader}>
+                <h2 className={styles.sectionTitle}>Interview Rounds</h2>
+                <button
+                  className={styles.btnPrimary}
+                  onClick={handleNewInterview}
+                >
+                  + Add Interview Round
+                </button>
+              </div>
+
+              {showInterviewForm && (
+                <div className={styles.interviewFormContainer}>
+                  <InterviewRoundForm
+                    jobId={jobId}
+                    interview={editingInterview || undefined}
+                    onSuccess={handleInterviewFormSuccess}
+                    onCancel={() => {
+                      setShowInterviewForm(false)
+                      setEditingInterview(null)
+                    }}
+                  />
+                </div>
+              )}
+
+              {!showInterviewForm && (
+                <>
+                  {interviews.length === 0 ? (
+                    <div className={styles.emptyState}>
+                      <p>No interview rounds yet.</p>
+                      <button
+                        className={styles.btnPrimary}
+                        onClick={handleNewInterview}
+                        style={{ marginTop: '20px' }}
+                      >
+                        Add First Interview Round
+                      </button>
+                    </div>
+                  ) : (
+                    <div className={styles.interviewsList}>
+                      {interviews.map((interview) => (
+                        <div key={interview.id} className={styles.interviewCard}>
+                          <div className={styles.interviewHeader}>
+                            <div>
+                              <h3 className={styles.interviewTitle}>
+                                Round {interview.round_number}
+                              </h3>
+                              {interview.interviewer_name && (
+                                <div className={styles.interviewerInfo}>
+                                  <strong>{interview.interviewer_name}</strong>
+                                  {interview.interviewer_email && (
+                                    <span> ({interview.interviewer_email})</span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                            <div className={styles.interviewActions}>
+                              <button
+                                className={styles.btnSecondary}
+                                onClick={() => handleEditInterview(interview)}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className={styles.btnDanger}
+                                onClick={() => handleDeleteInterview(interview.id)}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className={styles.interviewMeta}>
+                            {interview.scheduled_at && (
+                              <div className={styles.interviewMetaItem}>
+                                <strong>Scheduled:</strong>{' '}
+                                {new Date(interview.scheduled_at).toLocaleString()}
+                              </div>
+                            )}
+                            {interview.completed_at && (
+                              <div className={styles.interviewMetaItem}>
+                                <strong>Completed:</strong>{' '}
+                                {new Date(interview.completed_at).toLocaleString()}
+                              </div>
+                            )}
+                          </div>
+
+                          {interview.notes && (
+                            <div className={styles.interviewNotes}>
+                              <div
+                                className={styles.notesContent}
+                                dangerouslySetInnerHTML={{ __html: interview.notes }}
+                              />
+                            </div>
+                          )}
+
+                          {interview.recording_url && (
+                            <div className={styles.interviewRecording}>
+                              <a
+                                href={interview.recording_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.recordingLink}
+                              >
+                                🎙️ Listen to Recording
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           )}

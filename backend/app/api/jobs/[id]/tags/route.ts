@@ -22,6 +22,12 @@ export async function PUT(
             receivedAt: 'desc',
           },
         },
+        interviewRounds: {
+          orderBy: [
+            { roundNumber: 'asc' },
+            { scheduledAt: 'desc' },
+          ],
+        },
       },
     })
 
