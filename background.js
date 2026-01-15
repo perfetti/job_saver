@@ -3,7 +3,8 @@ const eventHandlers = {
   extractJobInfo: handleExtractJobInfo,
   getAvailableModels: handleGetAvailableModels,
   extractLinkedInProfile: handleExtractLinkedInProfile,
-  extractEmail: handleExtractEmail
+  extractEmail: handleExtractEmail,
+  checkApplicationStatus: handleCheckApplicationStatus
 };
 
 // Listen for messages from popup or content scripts
@@ -454,6 +455,70 @@ async function handleExtractEmail(data, sendResponse) {
     sendResponse({
       success: false,
       error: error.message || 'Failed to extract email'
+    });
+  }
+}
+
+/**
+ * Handle checking application status for a URL
+ * @param {Object} data - Contains url
+ * @param {Function} sendResponse - Callback to send response
+ */
+async function handleCheckApplicationStatus(data, sendResponse) {
+  try {
+    const { url } = data;
+
+    if (!url) {
+      sendResponse({
+        success: false,
+        error: 'URL is required'
+      });
+      return;
+    }
+
+    // Call backend API to check if job exists and has application
+    const backendUrl = `http://localhost:3000/api/jobs/by-url?url=${encodeURIComponent(url)}`;
+
+    const response = await fetch(backendUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      // If job not found, that's okay - just means no application
+      if (response.status === 404) {
+        sendResponse({
+          success: true,
+          hasApplication: false,
+          job: null
+        });
+        return;
+      }
+      throw new Error(`Failed to check application status: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Failed to check application status');
+    }
+
+    sendResponse({
+      success: true,
+      hasApplication: result.hasApplication || false,
+      job: result.job || null,
+      jobId: result.jobId || null
+    });
+
+  } catch (error) {
+    console.error('Error checking application status:', error);
+    // On error, assume no application (fail gracefully)
+    sendResponse({
+      success: true,
+      hasApplication: false,
+      error: error.message || 'Failed to check application status'
     });
   }
 }
